@@ -1,0 +1,24 @@
+{
+  "author": "Gábor Molnár <gabor.molnar@sch.bme.hu>",
+  "name": "js-schema",
+  "description": "A simple and easy to use JSON Schema library.",
+  "keywords": [
+    "schema",
+    "json",
+    "random generator"
+  ],
+  "version": "0.1.1",
+  "homepage": "https://github.com/molnarg/js-schema",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:molnarg/js-schema.git"
+  },
+  "dependencies": {
+    "def.js" : "*"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": "*"
+  },
+  "main": "./index.js"
+}
