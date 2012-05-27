@@ -10,7 +10,7 @@ Examples
 
 Object validation:
 
-javascrip```
+```javascript
 var schema = require('js-schema');
 
 var Duck = schema({
@@ -25,12 +25,11 @@ var myCat =  { purr  : function() {}, feed : function() {}, age : 3, color : 'bl
 
 console.log( Duck(myDuck) ); // true
 console.log( Duck(myCat)  ); // false
-
 ```
 
 Defining, validating, and generating resursive data structures:
 
-javascript```
+```javascript
 // defining the data structure
 var Tree = schema({ left : [Tree, Number], right : [Tree, Number] });
 
