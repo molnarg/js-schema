@@ -57,5 +57,5 @@ License
 
 The MIT License
 
-Copyright (C) 2012 Gábor Molnár
+Copyright (C) 2012 Gábor Molnár <gabor.molnar@sch.bme.hu>
 
