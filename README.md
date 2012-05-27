@@ -50,7 +50,7 @@ Installation
 
 Using [npm](http://npmjs.org):
 
-    npm install set.js
+    npm install js-schema
 
 License
 =======
