@@ -13,3 +13,7 @@ require('./lib/core/and')
 
 require('./lib/core/instanceof')
 require('./lib/core/schema')
+
+// extensions
+require('./lib/extensions/Number')
+
