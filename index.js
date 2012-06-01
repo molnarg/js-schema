@@ -16,4 +16,5 @@ require('./lib/core/schema')
 
 // extensions
 require('./lib/extensions/Number')
-
+require('./lib/extensions/Function')
+require('./lib/extensions/Object')
