@@ -22,7 +22,7 @@ var Duck = schema({
 
 var myDuck = { quack : function() {}, feed : function() {}, age : 2, color : 'yellow' };
 var myCat =  { purr  : function() {}, feed : function() {}, age : 3, color : 'black'  };
-var animals = [myDuck, myCat, /*...*/ ]
+var animals = [myDuck, myCat, /*...*/ ];
 
 console.log( Duck(myDuck) ); // true
 console.log( Duck(myCat)  ); // false
@@ -110,7 +110,7 @@ Functions
 Future plans
 ============
 
-Defining, validating resursive data structures:
+Defining and validating resursive data structures:
 
 ```javascript
 // defining the data structure
