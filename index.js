@@ -14,12 +14,8 @@ require('./lib/core/and')
 require('./lib/core/instanceof')
 require('./lib/core/schema')
 
-// extensions
+// Extensions
 require('./lib/extensions/Number')
 require('./lib/extensions/Function')
 require('./lib/extensions/Object')
 require('./lib/extensions/Array')
-
-//var schema = module.exports
-//console.log(schema([3,4]))
-//console.log(schema([3,4]).toString())
