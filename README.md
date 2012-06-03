@@ -59,35 +59,103 @@ Instanceof
 
 Examples:
 ```javascript
-schema(Number)(1);   //true
-schema(String)(1);   //false
-schema(String)('x'); //true
+schema(Number)(1)   == true;
+schema(String)('x') == true;
+schema(String)(1)   == false;
 
-function Class() { /*...*/ }  // constructor function
+function Class() { /*...*/ }
 var object = new Class();
 
-schema(Class)(object);  // true
-schema(Class)({});      // false
-schema(Number)(object); // false
+schema(Class)(object)  == true;
+schema(Class)({})      == false;
+schema(Number)(object) == false;
 ```
 
 Object
 ------
 
-Reference
+`schema({ a : pattern1, b : pattern2, ... })(object)` is true if `object` has a property named
+`a` that matches `pattern1`, and has a property named `b` that matches `pattern2`, etc...
+
+Examples:
+```javascript
+// used with the instanceof pattern:
+schema({ a : Number })({ a : 1 })        == true;
+schema({ a : Number })({ a : 1, b : 2 }) == true;
+schema({ a : Number })({ b : 1 })        == false;
+schema({ a : Number })({ a : 's' })      == false;
+```
+
+Primitive
 ---------
+
+`schema(primitive)(variable)` (where `primitive` is a JavaScript primitive, e.g. boolean,
+number, or string) is true if `r === variable`.
+
+Examples:
+```javascript
+schema(1)(1) == true;
+schema(1)(2) == false;
+
+// used with the object pattern:
+schema({ x : 'a' })({ x : 'a' }) == true;
+schema({ x : 'a' })({ x : 'b' }) == false;
+```
 
 Or
 --
 
+`schema([pattern1, pattern2])(variable)` is true if `pattern1` _or_ `pattern2` matches `variable`.
+
+Examples:
+```javascript
+// used with the instanceof and primitive pattern:
+schema([Number, 'a', 'b'])(1)   == true;
+schema([Number, 'a', 'b'])(42)  == true;
+schema([Number, 'a', 'b'])('a') == true;
+schema([Number, 'a', 'b'])('x') == false;
+```
+
 And
 ---
+
+`schema([[pattern1, pattern2]])(variable)` is true if `pattern1` _and_ `pattern2` matches `variable`.
+
+Examples:
+```javascript
+function Class(a) { this.a = a; }
+
+// used with the instanceof and object pattern:
+schema([[Class, {a : 5}]])(new Class(5)) == true;
+schema([[Class, {a : 5}]])(new Class(3)) == false;
+schema([[Class, {a : 5}]])({a : 5})      == false;
+```
 
 Nothing
 -------
 
+`schema(null)(variable)` is true if `variable` is `null` or `undefined`.
+
+Examples:
+```javascript
+// used with the object pattern
+schema({a : null})({b : 1})    == true;
+schema({a : null})({a : null}) == true;
+schema({a : null})({a : 1})    == false;
+```
+
 Anything
 --------
+
+`schema(undefined)(variable)` is true if `variable` is not `null` or `undefined`.
+
+Examples:
+```javascript
+// used with the object pattern
+schema({a : undefined})({a : 1})    == true;
+schema({a : undefined})({b : 1})    == false;
+schema({a : undefined})({a : null}) == false;
+```
 
 Reference - extensions
 ======================
