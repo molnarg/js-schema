@@ -79,11 +79,30 @@ Object
 
 Examples:
 ```javascript
-// used with the instanceof pattern:
+// used with the 'instanceof' pattern:
 schema({ a : Number })({ a : 1 })        == true;
 schema({ a : Number })({ a : 1, b : 2 }) == true;
 schema({ a : Number })({ b : 1 })        == false;
 schema({ a : Number })({ a : 's' })      == false;
+```
+
+Class schema
+------------
+
+`schema(Class)(object)` (where `Class` is a function, and has a function type property named
+`schema`) is true if `Class.schema(object)`.
+
+Examples:
+```javascript
+// used with the 'object', 'instanceof' and 'or' pattern
+function Tree(left, right) { this.left = left; this.right = right; }
+Tree.schema = schema({ left : [Tree, Number], right : [Tree, Number] });
+
+var tree = new Tree(1, new Tree(1,2));
+
+schema(Tree)(tree)                                          == true;
+schema(Tree)({ left : { left : 1, right : 2 }, right : 3 }) == true;
+schema(Tree)({ left : { left : 1, right : 2 } })            == false;
 ```
 
 Primitive
@@ -97,7 +116,7 @@ Examples:
 schema(1)(1) == true;
 schema(1)(2) == false;
 
-// used with the object pattern:
+// used with the 'object' pattern:
 schema({ x : 'a' })({ x : 'a' }) == true;
 schema({ x : 'a' })({ x : 'b' }) == false;
 ```
@@ -109,7 +128,7 @@ Or
 
 Examples:
 ```javascript
-// used with the instanceof and primitive pattern:
+// used with the 'instanceof' and 'primitive' pattern:
 schema([Number, 'a', 'b'])(1)   == true;
 schema([Number, 'a', 'b'])(42)  == true;
 schema([Number, 'a', 'b'])('a') == true;
@@ -125,7 +144,7 @@ Examples:
 ```javascript
 function Class(a) { this.a = a; }
 
-// used with the instanceof and object pattern:
+// used with the 'instanceof' and 'object' pattern:
 schema([[Class, {a : 5}]])(new Class(5)) == true;
 schema([[Class, {a : 5}]])(new Class(3)) == false;
 schema([[Class, {a : 5}]])({a : 5})      == false;
@@ -138,7 +157,7 @@ Nothing
 
 Examples:
 ```javascript
-// used with the object pattern
+// used with the 'object' pattern
 schema({a : null})({b : 1})    == true;
 schema({a : null})({a : null}) == true;
 schema({a : null})({a : 1})    == false;
@@ -151,7 +170,7 @@ Anything
 
 Examples:
 ```javascript
-// used with the object pattern
+// used with the 'object' pattern
 schema({a : undefined})({a : 1})    == true;
 schema({a : undefined})({b : 1})    == false;
 schema({a : undefined})({a : null}) == false;
