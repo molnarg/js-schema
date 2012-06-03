@@ -66,28 +66,28 @@ schema(String)('x'); //true
 function Class() { /*...*/ }  // constructor function
 var object = new Class();
 
-schema(Class)(object)  // true
-schema(Class)({})      // false
-schema(Number)(object) // false
+schema(Class)(object);  // true
+schema(Class)({});      // false
+schema(Number)(object); // false
 ```
 
-And
----
+Object
+------
+
+Reference
+---------
 
 Or
 --
 
-Object
-------
+And
+---
 
 Nothing
 -------
 
 Anything
 --------
-
-Reference
----------
 
 Reference - extensions
 ======================
