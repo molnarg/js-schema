@@ -48,8 +48,11 @@ as wrapper. These extensions are usually tied to native object constructors, lik
 `Number`, or `String`, and can be used everywhere where a pattern is expected. Examples
 include `Array.of(X)`, `Number.min(X)`, or `String.matches(/X/)`.
 
-Reference - patterns
-====================
+Patterns
+========
+
+Basic rules
+-----------
 
 There are 8 basic rules used by js-schema:
 
@@ -67,6 +70,9 @@ matches `x.b`, etc.
 The order is important. When calling `schema(pattern)`, the rules are examined one by one,
 starting with the first. If there's a match, js-schema first resolves the sub-patterns, and then
 generates the appropriate validator function and returns it.
+
+Example
+-------
 
 The following example contains patterns for all of the rules, except the first. The comments
 denote the number of the rules used and the nesting level of the subpatterns (indentation).
@@ -109,8 +115,8 @@ The `schema` function compiles the pattern, and returns the value of the followi
 As you can see, the compiled function is nearly optimal, and looks like what anyone would
 write when following the rules described above.
 
-Reference - extensions
-======================
+Extensions
+==========
 
 Numbers
 -------
