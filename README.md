@@ -140,6 +140,10 @@ and `above`. All of these are chainable, so for example `Number.min(a).below(b)`
 Future plans
 ============
 
+Better JSON Schema support. js-schema should be able to parse any valid JSON schema and generate
+JSON Schema for most of the patterns (there are cases when this is not possible in general,
+e.g. patterns that have external references like the instanceof pattern).
+
 Defining and validating resursive data structures:
 
 ```javascript
@@ -164,6 +168,12 @@ test(testcases);
 
 Using the random object generation, it should be possible to build a QucikCheck-like testing
 framework, which could be used to generate testcases for js-schema (yes, I like resursion).
+
+Contributing
+============
+
+Feel free to open an issue if you would like to help imporving js-schema, find a bug, or even
+if there's a feature that would be useful for you but don't have the time to implement it yourself.
 
 Installation
 ============
