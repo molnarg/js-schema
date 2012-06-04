@@ -46,7 +46,10 @@ Most patterns accept other patterns as parameters, so composition of patterns is
 Extensions are functions that return validator by themselves without using the `schema` function
 as wrapper. These extensions are usually tied to native object constructors, like `Array`,
 `Number`, or `String`, and can be used everywhere where a pattern is expected. Examples
-include `Array.of(X)`, `Number.min(X)`, or `String.matches(/X/)`.
+include `Array.of(X)`, `Number.min(X)`.
+
+For serialization to JSON Schema use the `toJSON()` method of any schema. For deserialization
+use `schema.fromJSON()`. _Warning_: JSON support is still incomplete.
 
 Patterns
 ========
