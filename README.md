@@ -121,20 +121,23 @@ write when following the rules described above.
 Extensions
 ==========
 
-Numbers
--------
+### Objects ###
 
-Strings
--------
+`Object.Reference(object)` matches `x` if `x === object`.
 
-Objects
--------
+### Functions ###
 
-Arrays
-------
+`Function.Reference(func)` matches `x` if `x === func`.
 
-Functions
----------
+### Arrays ###
+
+`Array.of(pattern)` matches `x` if `x instanceof Array` and `pattern` matches every element of `x`.
+
+### Numbers ###
+
+There are four functions that can be used for describing number ranges: `min`, `max`, `below`
+and `above`. All of these are chainable, so for example `Number.min(a).below(b)` matches `x` if
+`a <= x && x < b`.
 
 Future plans
 ============
