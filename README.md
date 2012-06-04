@@ -162,6 +162,9 @@ var testcases = schema.random(Array.of(Tree));
 test(testcases);
 ```
 
+Using the random object generation, it should be possible to build a QucikCheck-like testing
+framework, which could be used to generate testcases for js-schema (yes, I like resursion).
+
 Installation
 ============
 
