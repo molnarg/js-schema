@@ -15,13 +15,13 @@ var schema = require('js-schema');
 var Duck = schema({
   quack : Function,
   feed : Function,
-  age : Number.min(0).max(5)
+  age : Number.min(0).max(5),
   color : ['yellow', 'brown']
 });
 
 var myDuck = { quack : function() {}, feed : function() {}, age : 2, color : 'yellow' };
 var myCat =  { purr  : function() {}, feed : function() {}, age : 3, color : 'black'  };
-var animals = [myDuck, myCat, /*...*/ ];
+var animals = [myDuck, myCat, {}, /*...*/ ];
 
 console.log( Duck(myDuck) ); // true
 console.log( Duck(myCat)  ); // false
