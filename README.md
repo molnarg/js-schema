@@ -4,8 +4,8 @@ js-schema
 js-schema is essentially a new way to describe JSON schemas using a
 much cleaner and simpler syntax. Think of it like regexp for objects.
 
-Examples
-========
+A simple example
+================
 
 Object validation and filtering:
 
@@ -54,8 +54,7 @@ use `schema.fromJSON()`. _Warning_: JSON support is still incomplete.
 Patterns
 ========
 
-Basic rules
------------
+### Basic rules ###
 
 There are 8 basic rules used by js-schema:
 
@@ -74,8 +73,7 @@ The order is important. When calling `schema(pattern)`, the rules are examined o
 starting with the first. If there's a match, js-schema first resolves the sub-patterns, and then
 generates the appropriate validator function and returns it.
 
-Example
--------
+### Example ###
 
 The following example contains patterns for all of the rules, except the first. The comments
 denote the number of the rules used and the nesting level of the subpatterns (indentation).
