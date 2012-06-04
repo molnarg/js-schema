@@ -7,7 +7,7 @@
     "json",
     "random generator"
   ],
-  "version": "0.2",
+  "version": "0.2.0",
   "homepage": "https://github.com/molnarg/js-schema",
   "repository": {
     "type": "git",
