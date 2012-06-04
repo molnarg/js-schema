@@ -1,9 +1,8 @@
 js-schema
 =========
 
-js-schema is essentially a way to describe JSON schemas using a
-much cleaner and simpler syntax. Schemas described this way
-can be then serialized to standard JSON schema.
+js-schema is essentially a new way to describe JSON schemas using a
+much cleaner and simpler syntax. Think of it like regexp for objects.
 
 Examples
 ========
@@ -52,129 +51,63 @@ include `Array.of(X)`, `Number.min(X)`, or `String.matches(/X/)`.
 Reference - patterns
 ====================
 
-Instanceof
-----------
+There are 8 basic rules used by js-schema:
 
-`schema(Class)(object)` (where `Class` is a function) is true if `object instanceof Class`.
+1. `Class` (where `Class` is a function, and has a function type property called
+`schema`) matches `x` if `Class.schema(x)` is true
+2. `Class` (where `Class` is a function) matches `x` if `x instanceof Class`
+3. `[[pattern1, pattern2, ...]]` matches `x` if _all_ of the given patterns match `x`
+4. `[pattern1, pattern2, ...]` matches `x` if _any_ of the given patterns match `x`
+5. `{ a : pattern1, b : pattern2, ... }` matches `x` if `pattern1`  matches `x.a`, `pattern2`
+matches `x.b`, etc.
+6. `undefined` matches `x` if `x` _is not_ `null` or `undefined`
+7. `null` matches `x` if `x` _is_ `null` or `undefined`
+8. `primitive` (where `primitive` is boolean, number, or string) matches `x` if `primitive === x`
 
-Examples:
+The order is important. When calling `schema(pattern)`, the rules are examined one by one,
+starting with the first. If there's a match, js-schema first resolves the sub-patterns, and then
+generates the appropriate validator function and returns it.
+
+The following example contains patterns for all of the rules, except the first. The comments
+denote the number of the rules used and the nesting level of the subpatterns (indentation).
+
 ```javascript
-schema(Number)(1)   == true;
-schema(String)('x') == true;
-schema(String)(1)   == false;
-
-function Class() { /*...*/ }
-var object = new Class();
-
-schema(Class)(object)  == true;
-schema(Class)({})      == false;
-schema(Number)(object) == false;
+validator = schema({              // (5) 'object' pattern
+  a : [[ String, {length : 5} ]], //     (3) 'and' pattern
+                                  //         (2) 'instanceof' pattern
+                                  //         (5) 'object' pattern
+                                  //             (8) 'primitive' pattern
+  b : [Color, 'red', 'blue'],     //     (4) 'or' pattern
+                                  //         (2) 'instanceof' pattern
+                                  //         (8) 'primitive' pattern
+  c : undefined,                  //     (6) 'anything' pattern
+  d : null                        //     (7) 'nothing' pattern
+});
 ```
 
-Object
-------
+The `schema` function compiles the pattern, and returns the value of the following expression
+(the validator function):
 
-`schema({ a : pattern1, b : pattern2, ... })(object)` is true if `object` has a property named
-`a` that matches `pattern1`, and has a property named `b` that matches `pattern2`, etc...
-
-Examples:
 ```javascript
-// used with the 'instanceof' pattern:
-schema({ a : Number })({ a : 1 })        == true;
-schema({ a : Number })({ a : 1, b : 2 }) == true;
-schema({ a : Number })({ b : 1 })        == false;
-schema({ a : Number })({ a : 's' })      == false;
+(functon(r0){
+  return function(instance){
+    return instance != null && (
+             (Object(instance["a"]) instanceof String) && 
+             (instance["a"] != null && (instance["a"]["length"] === 5))
+           ) && (
+             (Object(instance["b"]) instanceof r0) ||
+             (instance["b"] === "red") || (instance["b"] === "blue")
+           ) && (
+             instance["c"] != null
+           ) && (
+             instance["d"] == null
+           );
+  };
+}(Color));
 ```
 
-Class schema
-------------
-
-`schema(Class)(object)` (where `Class` is a function, and has a function type property named
-`schema`) is true if `Class.schema(object)`.
-
-Examples:
-```javascript
-// used with the 'object', 'instanceof' and 'or' pattern
-function Tree(left, right) { this.left = left; this.right = right; }
-Tree.schema = schema({ left : [Tree, Number], right : [Tree, Number] });
-
-var tree = new Tree(1, new Tree(1,2));
-
-schema(Tree)(tree)                                          == true;
-schema(Tree)({ left : { left : 1, right : 2 }, right : 3 }) == true;
-schema(Tree)({ left : { left : 1, right : 2 } })            == false;
-```
-
-Primitive
----------
-
-`schema(primitive)(variable)` (where `primitive` is a JavaScript primitive, e.g. boolean,
-number, or string) is true if `r === variable`.
-
-Examples:
-```javascript
-schema(1)(1) == true;
-schema(1)(2) == false;
-
-// used with the 'object' pattern:
-schema({ x : 'a' })({ x : 'a' }) == true;
-schema({ x : 'a' })({ x : 'b' }) == false;
-```
-
-Or
---
-
-`schema([pattern1, pattern2])(variable)` is true if `pattern1` _or_ `pattern2` matches `variable`.
-
-Examples:
-```javascript
-// used with the 'instanceof' and 'primitive' pattern:
-schema([Number, 'a', 'b'])(1)   == true;
-schema([Number, 'a', 'b'])(42)  == true;
-schema([Number, 'a', 'b'])('a') == true;
-schema([Number, 'a', 'b'])('x') == false;
-```
-
-And
----
-
-`schema([[pattern1, pattern2]])(variable)` is true if `pattern1` _and_ `pattern2` matches `variable`.
-
-Examples:
-```javascript
-function Class(a) { this.a = a; }
-
-// used with the 'instanceof' and 'object' pattern:
-schema([[Class, {a : 5}]])(new Class(5)) == true;
-schema([[Class, {a : 5}]])(new Class(3)) == false;
-schema([[Class, {a : 5}]])({a : 5})      == false;
-```
-
-Nothing
--------
-
-`schema(null)(variable)` is true if `variable` is `null` or `undefined`.
-
-Examples:
-```javascript
-// used with the 'object' pattern
-schema({a : null})({b : 1})    == true;
-schema({a : null})({a : null}) == true;
-schema({a : null})({a : 1})    == false;
-```
-
-Anything
---------
-
-`schema(undefined)(variable)` is true if `variable` is not `null` or `undefined`.
-
-Examples:
-```javascript
-// used with the 'object' pattern
-schema({a : undefined})({a : 1})    == true;
-schema({a : undefined})({b : 1})    == false;
-schema({a : undefined})({a : null}) == false;
-```
+As you can see, the compiled function is nearly optimal, and looks like what anyone would
+write when following the rules described above.
 
 Reference - extensions
 ======================
