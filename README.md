@@ -129,7 +129,10 @@ Extensions
 
 ### Arrays ###
 
-`Array.of(pattern)` matches `x` if `x instanceof Array` and `pattern` matches every element of `x`.
+The `Array.of` method has three signatures:
+- `Array.of(pattern)` matches `x` if `x instanceof Array` and `pattern` matches every element of `x`.
+- `Array.of(length, pattern)` additionally checks the length of the instance and returns true only if it equals to `length`.
+- `Array.of(minLength, maxLength, pattern)` is similar, but checks if the length is in the given interval.
 
 ### Numbers ###
 
