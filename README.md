@@ -136,9 +136,9 @@ The `Array.of` method has three signatures:
 
 ### Numbers ###
 
-There are four functions that can be used for describing number ranges: `min`, `max`, `below`
-and `above`. All of these are chainable, so for example `Number.min(a).below(b)` matches `x` if
-`a <= x && x < b`.
+There are five functions that can be used for describing number ranges: `min`, `max`, `below`,
+`above` and `step`. All of these are chainable, so for example `Number.min(a).below(b)` matches `x`
+if `a <= x && x < b`. The `Number.step(a)` matches `x` if `x` is a divisble by `a`.
 
 Future plans
 ============
