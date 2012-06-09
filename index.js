@@ -14,6 +14,8 @@ require('./lib/core/and')
 require('./lib/core/instanceof')
 require('./lib/core/schema')
 
+require('./lib/core/regexp')
+
 // Extensions
 require('./lib/extensions/Number')
 require('./lib/extensions/Function')
