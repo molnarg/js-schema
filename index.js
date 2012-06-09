@@ -1,20 +1,19 @@
 module.exports = require('./lib/schema')
 
 // Core schemas
-require('./lib/core/reference')
+require('./lib/patterns/reference')
 
-require('./lib/core/nothing')
-require('./lib/core/anything')
+require('./lib/patterns/nothing')
+require('./lib/patterns/anything')
 
-require('./lib/core/object')
+require('./lib/patterns/object')
 
-require('./lib/core/or')
-require('./lib/core/and')
+require('./lib/patterns/or')
 
-require('./lib/core/instanceof')
-require('./lib/core/schema')
+require('./lib/patterns/instanceof')
+require('./lib/patterns/schema')
 
-require('./lib/core/regexp')
+require('./lib/patterns/regexp')
 
 // Extensions
 require('./lib/extensions/Number')
