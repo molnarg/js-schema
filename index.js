@@ -18,6 +18,7 @@ require('./lib/patterns/regexp')
 // Extensions
 require('./lib/extensions/Boolean')
 require('./lib/extensions/Number')
-require('./lib/extensions/Function')
+require('./lib/extensions/String')
 require('./lib/extensions/Object')
 require('./lib/extensions/Array')
+require('./lib/extensions/Function')
