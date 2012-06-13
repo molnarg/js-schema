@@ -89,25 +89,31 @@ generates the appropriate validator function and returns it.
 
 ### The object pattern ###
 
-Rule 5 is more complex than the others. Using the object pattern it is possible to
+The object pattern is more complex than the others. Using the object pattern it is possible to
 define optional properties, regexp properties, etc. This extra information can be encoded in
-the property names. The property names are always regexp patterns, so `schema({'colou?r' : String})`
-matches any object that has either `color` or `colour` property that has a string type value.
-The number of expected matches can also be with specifying `?`, `+` or `*` as the first
-character of the property name. `?` means 0 or 1, `*` means 0 or more, and `+` means 1 or more.
+the property names.
 
-Let's see some examples of using these:
+The property names in an object pattern are always regular expressions, and the given schema
+applies to instance properties whose name match this regexp. The number of expected matches can
+also be specified with '?', '+' or '*' as the first character of the property name. '?' means
+0 or 1, '*' means 0 or more, and '+' means 1 or more. A single '*' as a property name
+matches any instance property that is not matched by other regexps.
+
+An example of using these:
 ```javascript
-x = { /* ... */ };
+var x = { /* ... */ };
 
 validate = schema({
   'name'             : String,  // x.name must be string
-  'colou?r'          : String   // x must have a string type property called either 'color' or 'colour' (but not both)
-  '?location'        : String,  // if x has a property called 'location' then its value must be string
-  '*identifier-.*'   : Number,  // if the name of a property of x matches /identifier-.*/   then its value must be a number
-  '+serialnumber-.*' : Number,  // if the name of a property of x matches /serialnumber-.*/ then its value must be a number
-                                // and there should be at least one such property
-  '*'                : Boolean  // any other property that doesn't match any of these rules must be Boolean
+  'colou?r'          : String   // x must have a string type property called either
+                                // 'color' or 'colour' but not both
+  '?location'        : String,  // if x has a property called 'location' then it must be string
+  '*identifier-.*'   : Number,  // if the name of a property of x matches /identifier-.*/ then
+                                // it must be a number
+  '+serialnumber-.*' : Number,  // if the name of a property of x matches /serialnumber-.*/ then
+                                // it must be a number and there should be at least one such property
+  '*'                : Boolean  // any other property that doesn't match any of these rules
+                                // must be Boolean
 });
 
 assert( validate(x) === true );
