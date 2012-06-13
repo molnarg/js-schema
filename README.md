@@ -2,8 +2,7 @@ js-schema
 =========
 
 js-schema is a new way of describing object schemas in JavaScript. It has a clean and simple syntax.
-Usecases include object validation and random object generation. Serialization and deserialization
-of schemas is also supported: js-schema uses the popular JSON-schema format for this.
+Usecases include object validation and random object generation.
 
 A simple example
 ================
@@ -21,7 +20,7 @@ var Duck = schema({             // A duck
 });
 ```
 
-The resulting function can be used for checking and validating objects:
+The resulting function can be used for checking or validating objects:
 
 ```javascript
 var myDuck = { quack : function() {}, feed : function() {}, age : 2, color : 'yellow' };
@@ -76,10 +75,10 @@ There are 8 basic rules used by js-schema:
 1. `Class` (where `Class` is a function, and has a function type property called
 `schema`) matches `x` if `Class.schema(x)` is true
 2. `Class` (where `Class` is a function) matches `x` if `x instanceof Class`
-3. `[[pattern1, pattern2, ...]]` matches `x` if _all_ of the given patterns match `x`
+3. `/regexp/` matches `x` if `/regexp/.test(x) === true`
 4. `[pattern1, pattern2, ...]` matches `x` if _any_ of the given patterns match `x`
-5. `{ a : pattern1, b : pattern2, ... }` matches `x` if `pattern1`  matches `x.a`, `pattern2`
-matches `x.b`, etc.
+5. `{ 'a' : pattern1, 'b' : pattern2, ... }` matches `x` if `pattern1` matches `x.a`,
+   `pattern2` matches `x.b`, etc. For details see the next subsection.
 6. `undefined` matches `x` if `x` _is not_ `null` or `undefined`
 7. `null` matches `x` if `x` _is_ `null` or `undefined`
 8. `primitive` (where `primitive` is boolean, number, or string) matches `x` if `primitive === x`
@@ -88,48 +87,55 @@ The order is important. When calling `schema(pattern)`, the rules are examined o
 starting with the first. If there's a match, js-schema first resolves the sub-patterns, and then
 generates the appropriate validator function and returns it.
 
+### The object pattern ###
+
+Rule 5 is more complex than the others. Using the object pattern it is possible to
+define optional properties, regexp properties, etc. This extra information can be encoded in
+the property names. The property names are always regexp patterns, so `schema({'colou?r' : String})`
+matches any object that has either `color` or `colour` property that has a string type value.
+The number of expected matches can also be with specifying `?`, `+` or `*` as the first
+character of the property name. `?` means 0 or 1, `*` means 0 or more, and `+` means 1 or more.
+
+Let's see some examples of using these:
+```javascript
+x = { /* ... */ };
+
+validate = schema({
+  'name'             : String,  // x.name must be string
+  'colou?r'          : String   // x must have a string type property called either 'color' or 'colour' (but not both)
+  '?location'        : String,  // if x has a property called 'location' then its value must be string
+  '*identifier-.*'   : Number,  // if the name of a property of x matches /identifier-.*/   then its value must be a number
+  '+serialnumber-.*' : Number,  // if the name of a property of x matches /serialnumber-.*/ then its value must be a number
+                                // and there should be at least one such property
+  '*'                : Boolean  // any other property that doesn't match any of these rules must be Boolean
+});
+
+assert( validate(x) === true );
+```
+
 ### Example ###
 
 The following example contains patterns for all of the rules, except the first. The comments
 denote the number of the rules used and the nesting level of the subpatterns (indentation).
 
 ```javascript
-validator = schema({              // (5) 'object' pattern
-  a : [[ String, {length : 5} ]], //     (3) 'and' pattern
-                                  //         (2) 'instanceof' pattern
-                                  //         (5) 'object' pattern
-                                  //             (8) 'primitive' pattern
-  b : [Color, 'red', 'blue'],     //     (4) 'or' pattern
-                                  //         (2) 'instanceof' pattern
-                                  //         (8) 'primitive' pattern
-  c : undefined,                  //     (6) 'anything' pattern
-  d : null                        //     (7) 'nothing' pattern
+validate = schema({                  // (5) 'object' pattern
+  a : [Color, 'red', 'blue'],        //     (4) 'or' pattern
+                                     //         (2) 'instanceof' pattern
+                                     //         (8) 'primitive' pattern
+  b : /The meaning of life is \d+/,  //     (3) regexp pattern
+  c : undefined,                     //     (6) 'anything' pattern
+  d : null                           //     (7) 'nothing' pattern
 });
+
+validate(x);
 ```
 
-The `schema` function compiles the pattern, and returns the value of the following expression
-(the validator function):
-
-```javascript
-(functon(r0){
-  return function(instance){
-    return instance != null && (
-             (Object(instance["a"]) instanceof String) && 
-             (instance["a"] != null && (instance["a"]["length"] === 5))
-           ) && (
-             (Object(instance["b"]) instanceof r0) ||
-             (instance["b"] === "red") || (instance["b"] === "blue")
-           ) && (
-             instance["c"] != null
-           ) && (
-             instance["d"] == null
-           );
-  };
-}(Color));
-```
-
-As you can see, the compiled function is nearly optimal, and looks like what anyone would
-write when following the rules described above.
+`validate(x)` returns true if all of these are true:
+* `x.a` is either 'red' or 'blue' or an instance of the Color class
+* `x.b` is a string that matches the /The meaning of life is \d+/ regexp
+* `x` does have a property called `c`
+* `x` doesn't have a property called `d`, or it does but it is null or undefined
 
 Extensions
 ==========
