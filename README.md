@@ -1,32 +1,47 @@
 js-schema
 =========
 
-js-schema is essentially a new way to describe JSON schemas using a
-much cleaner and simpler syntax. Think of it like regexp for objects.
+js-schema is a new way of describing object schemas in JavaScript. It has a clean and simple syntax.
+Usecases include object validation and random object generation. Serialization and deserialization
+of schemas is also supported: js-schema uses the popular JSON-schema format for this.
 
 A simple example
 ================
 
-Object validation and filtering:
+Defining a schema:
 
 ```javascript
 var schema = require('js-schema');
 
-var Duck = schema({
-  quack : Function,
-  feed : Function,
-  age : Number.min(0).max(5),
-  color : ['yellow', 'brown']
+var Duck = schema({             // A duck
+  quack : Function,             //  - can quack
+  feed : Function,              //  - can be fed
+  age : Number.min(0).max(5),   //  - is 0 to 5 years old
+  color : ['yellow', 'brown']   //  - has either yellow or brown color
 });
+```
 
+The resulting function can be used for checking and validating objects:
+
+```javascript
 var myDuck = { quack : function() {}, feed : function() {}, age : 2, color : 'yellow' };
 var myCat =  { purr  : function() {}, feed : function() {}, age : 3, color : 'black'  };
 var animals = [myDuck, myCat, {}, /*...*/ ];
 
 console.log( Duck(myDuck) ); // true
 console.log( Duck(myCat)  ); // false
-console.log( animals.filter(Duck) ); // every Duck-like object
+
+console.log( animals.filter(Duck)                        ); // every Duck-like object
 console.log( animals.filter(schema({ feed : Function })) ); // every animal that can be fed
+```
+
+It is also possible to generate random objects for testing purposes:
+
+```javascript
+console.log( Duck.generate() );
+
+var testcases = Array.of(10, Duck).generate();
+test(testcases);
 ```
 
 Usage
@@ -144,8 +159,8 @@ Future plans
 ============
 
 Better JSON Schema support. js-schema should be able to parse any valid JSON schema and generate
-JSON Schema for most of the patterns (there are cases when this is not possible in general,
-e.g. patterns that have external references like the instanceof pattern).
+JSON Schema for most of the patterns (this is not possible in general, e.g. patterns that have
+external references like the instanceof pattern).
 
 Defining and validating resursive data structures:
 
@@ -156,17 +171,6 @@ var Tree = schema({ left : [Tree, Number], right : [Tree, Number] });
 // validation
 console.log( Tree({left : {left : 1, right : 2   }, right : 9}) ); // true
 console.log( Tree({left : {left : 1, right : null}, right : 9}) ); // false
-```
-
-Generating random objects based on schema description:
-
-```javascript
-// generating random trees
-console.log( schema.random(Tree) ); // {left : 0.123, right : {left : 0.2, right : 0.9}}
-
-// generating an array of random trees for testing
-var testcases = schema.random(Array.of(Tree));
-test(testcases);
 ```
 
 Using the random object generation, it should be possible to build a QucikCheck-like testing
