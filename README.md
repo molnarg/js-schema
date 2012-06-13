@@ -93,7 +93,7 @@ The following example contains patterns for all of the rules, except the first. 
 denote the number of the rules used and the nesting level of the subpatterns (indentation).
 
 ```javascript
-validate = schema({                  // (5) 'object' pattern
+var validate = schema({              // (5) 'object' pattern
   a : [Color, 'red', 'blue'],        //     (4) 'or' pattern
                                      //         (2) 'instanceof' pattern
                                      //         (8) 'primitive' pattern
@@ -127,7 +127,7 @@ An example of using these:
 ```javascript
 var x = { /* ... */ };
 
-validate = schema({
+var validate = schema({
   'name'             : String,  // x.name must be string
   'colou?r'          : String   // x must have a string type property called either
                                 // 'color' or 'colour' but not both
