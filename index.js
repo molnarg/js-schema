@@ -8,8 +8,7 @@ require('./lib/patterns/object')
 require('./lib/patterns/or')
 require('./lib/patterns/equality')
 require('./lib/patterns/regexp')
-require('./lib/patterns/instanceof')
-require('./lib/patterns/schema')
+require('./lib/patterns/class')
 
 // Extensions
 require('./lib/extensions/Boolean')
