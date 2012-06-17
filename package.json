@@ -1,20 +1,22 @@
 {
   "author": "Gábor Molnár <gabor.molnar@sch.bme.hu>",
   "name": "js-schema",
-  "description": "A simple and easy to use JSON Schema library.",
+  "description": "A simple and easy to use schema library.",
   "keywords": [
     "schema",
-    "json",
-    "random generator"
+    "JSON Schema",
+    "random generator",
+    "object generation",
+    "testing"
   ],
-  "version": "0.3.0",
+  "version": "0.4.0",
   "homepage": "https://github.com/molnarg/js-schema",
   "repository": {
     "type": "git",
     "url": "git@github.com:molnarg/js-schema.git"
   },
   "dependencies": {
-    "def.js" : "0.1.4",
+    "def.js" : "0.1.5",
     "randexp" : "*"
   },
   "devDependencies": {},
