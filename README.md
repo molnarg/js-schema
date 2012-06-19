@@ -12,6 +12,7 @@ Defining a schema:
 
 ```javascript
 var schema = require('js-schema');
+// or <script src="js-schema.min.js"></script> in the browser
 
 var Duck = schema({             // A duck
   quack : Function,             //  - can quack
