@@ -156,25 +156,6 @@ assert( validate(x) === true );
 Extensions
 ==========
 
-### Objects ###
-
-`Object.reference(object)` matches `x` if `x === object`.
-
-`Object.like(object)` matches `x` if `x` deep equals `object`.
-
-### Functions ###
-
-`Function.reference(func)` matches `x` if `x === func`.
-
-### Arrays ###
-
-The `Array.like(array)` matches `x` if `x instanceof Array` and it deep equals `array`.
-
-The `Array.of` method has three signatures:
-- `Array.of(pattern)` matches `x` if `x instanceof Array` and `pattern` matches every element of `x`.
-- `Array.of(length, pattern)` additionally checks the length of the instance and returns true only if it equals to `length`.
-- `Array.of(minLength, maxLength, pattern)` is similar, but checks if the length is in the given interval.
-
 ### Numbers ###
 
 There are five functions that can be used for describing number ranges: `min`, `max`, `below`,
@@ -193,6 +174,25 @@ wrapped by `[]`. For example, `'abc'` means a character set containing the first
 of the english alphabet, while `'a-zA-C'` means a character set of all english lowercase letters,
 and the first 3 uppercase letters. If `charset` is `undefined` then the `a-zA-Z0-9` character set
 is used.
+
+### Arrays ###
+
+The `Array.like(array)` matches `x` if `x instanceof Array` and it deep equals `array`.
+
+The `Array.of` method has three signatures:
+- `Array.of(pattern)` matches `x` if `x instanceof Array` and `pattern` matches every element of `x`.
+- `Array.of(length, pattern)` additionally checks the length of the instance and returns true only if it equals to `length`.
+- `Array.of(minLength, maxLength, pattern)` is similar, but checks if the length is in the given interval.
+
+### Objects ###
+
+`Object.reference(object)` matches `x` if `x === object`.
+
+`Object.like(object)` matches `x` if `x` deep equals `object`.
+
+### Functions ###
+
+`Function.reference(func)` matches `x` if `x === func`.
 
 Future plans
 ============
