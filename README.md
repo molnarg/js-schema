@@ -5,8 +5,8 @@ js-schema is a new way of describing object schemas in JavaScript. It has a clea
 and it is capable of serializing to/from the popular JSON Schema format. Typical usecases include
 object validation and random object generation.
 
-A simple example
-================
+Features
+========
 
 Defining a schema:
 
@@ -14,35 +14,51 @@ Defining a schema:
 var schema = require('js-schema');
 // or <script src="js-schema.min.js"></script> in the browser
 
-var Duck = schema({             // A duck
-  quack : Function,             //  - can quack
-  feed : Function,              //  - can be fed
-  age : Number.min(0).max(5),   //  - is 0 to 5 years old
-  color : ['yellow', 'brown']   //  - has either yellow or brown color
+var Duck = schema({              // A duck
+  swim : Function,               //  - can swim
+  quack : Function,              //  - can quack
+  age : Number.min(0).max(5),    //  - is 0 to 5 years old
+  color : ['yellow', 'brown']    //  - has either yellow or brown color
 });
 ```
 
-The resulting function can be used for checking or validating objects:
+The resulting function (`Duck`) can be used for checking or validating objects:
 
 ```javascript
-var myDuck = { quack : function() {}, feed : function() {}, age : 2, color : 'yellow' };
-var myCat =  { purr  : function() {}, feed : function() {}, age : 3, color : 'black'  };
-var animals = [myDuck, myCat, {}, /*...*/ ];
+var myDuck = { quack : function() {}, swim : function() {}, age : 2, color : 'yellow' },
+    myCat =  { purr  : function() {}, walk : function() {}, age : 3, color : 'black'  },
+    animals = [ myDuck, myCat, {}, /*...*/ ];
 
 console.log( Duck(myDuck) ); // true
 console.log( Duck(myCat)  ); // false
 
-console.log( animals.filter(Duck)                        ); // every Duck-like object
-console.log( animals.filter(schema({ feed : Function })) ); // every animal that can be fed
+var ducks   = animals.filter( Duck );                        // every Duck-like animal
+var walking = animals.filter( schema({ walk : Function }) ); // every animal that can walk
 ```
 
-It is also possible to generate random objects for testing purposes:
+js-schema can generate random objects for a given schema for testing purposes:
 
 ```javascript
-console.log( Duck.generate() );
+var duck      = schema.generate( Duck );
+var testcases = schema.generate( Array.of(5, Duck) );
+```
 
-var testcases = Array.of(5, Duck).generate();
-console.log(testcases);
+It is also possible to define self-referencing data structures:
+
+```javascript
+var Tree = schema({ left : [ Number, Tree ], right : [ Number, Tree ] });
+var tree = schema.generate( Tree );
+```
+
+The schema description is _compiled_ into validation function for achieving maximal performance.
+
+```javascript
+console.log( Tree.toString() );
+// function self(instance) {
+//   return instance != null &&
+//          ((Object(instance["left" ]) instanceof Number) || self(instance["left" ])) && 
+//          ((Object(instance["right"]) instanceof Number) || self(instance["right"]));
+// }
 ```
 
 Usage
@@ -73,7 +89,7 @@ Patterns
 
 ### Basic rules ###
 
-There are 9 basic rules used for describing schemas:
+There are 10 basic rules used for describing schemas:
 
 1. `Class` (where `Class` is a function, and has a function type property called `schema`)
    matches `x` if `Class.schema(x) === true`.
@@ -83,9 +99,11 @@ There are 9 basic rules used for describing schemas:
 5. `[pattern1, pattern2, ...]` matches `x` if _any_ of the given patterns match `x`.
 6. `{ 'a' : pattern1, 'b' : pattern2, ... }` matches `x` if `pattern1` matches `x.a`,
    `pattern2` matches `x.b`, etc. For details see the object pattern subsection.
-7. `undefined` matches `x` if `x` _is not_ `null` or `undefined`.
+7. `primitive` (where `primitive` is boolean, number, or string) matches `x` if `primitive === x`.
 8. `null` matches `x` if `x` _is_ `null` or `undefined`.
-9. `primitive` (where `primitive` is boolean, number, or string) matches `x` if `primitive === x`.
+9. `undefined` matches anything.
+10. `schema.self` references the schema returned by the last use of the `schema` function.
+    For details see the self-referencing subsection.
 
 The order is important. When calling `schema(pattern)`, the rules are examined one by one,
 starting with the first. If there's a match, js-schema first resolves the sub-patterns, and then
@@ -102,12 +120,14 @@ var Color = function() {}, x = { /* ... */ };
 var validate = schema({                    // (6) 'object' pattern
   a : [ Color, 'red', 'blue', [[0,0,0]] ], //     (5) 'or' pattern
                                            //         (2) 'instanceof' pattern
-                                           //         (9) 'primitive' pattern
+                                           //         (7) 'primitive' pattern
                                            //         (4) 'deep equality' pattern
   b : Number,                              //     (1) 'class schema' pattern
   c : /The meaning of life is \d+/,        //     (3) regexp pattern
-  d : undefined,                           //     (7) 'anything' pattern
-  e : null                                 //     (8) 'nothing' pattern
+  d : undefined,                           //     (9) 'anything' pattern
+  e : [null, schema.self]                  //     (5) 'or' pattern
+                                           //         (8) 'nothing' pattern
+                                           //         (10) 'self' pattern
 });
 
 console.log( validate(x) );
@@ -118,8 +138,8 @@ console.log( validate(x) );
   or an array that is exactly like `[0,0,0]`
 * `x.b` conforms to Number.schema (it return true if `x.b instanceof Number`)
 * `x.c` is a string that matches the /The meaning of life is \d+/ regexp
-* `x` does have a property called `d`
-* `x` doesn't have a property called `e`, or it does but it is `null` or `undefined`
+* `x` doesn't have a property called `e`, or it does but it is `null` or `undefined`,
+  or it is an object that matches this schema
 
 ### The object pattern ###
 
@@ -152,6 +172,26 @@ var validate = schema({
 
 assert( validate(x) === true );
 ```
+
+### Self-referencing ###
+
+The easiest way to do self-referencing is using `schema.self`. However, to support a more
+intuitive notation (as seen in the Tree example above) there is an other way to reference
+the schema that is being described. When executing this:
+
+```javascript
+var Tree = schema({ left : [ Number, Tree ], right : [ Number, Tree ] });
+```
+
+js-schema sees in fact `{ left : [ Number, undefined ], right : [ Number, undefined ] }` as first
+parameter, since the value of the `Tree` variable is undefined when the schema function is
+called. Consider the meaning of `[ Number, undefined ]` according to the rules described above:
+'this property must be either Number, or anything else'. It doesn't make much sense to include
+'anything else' in an 'or' relation. If js-schema sees `undefined` in an or relation, it assumes
+that this is in fact a self-reference.
+
+Use this feature careful, because it may easily lead to bugs. Only use it when the return value of
+the schema function is assigned to a newly defined variable.
 
 Extensions
 ==========
@@ -201,23 +241,12 @@ Better JSON Schema support. js-schema should be able to parse any valid JSON sch
 JSON Schema for most of the patterns (this is not possible in general, because of patterns that hold
 external references like the 'instanceof' pattern).
 
+Error reporting. js-schema should be able to report validation errors in a meaningful way instead
+of just stopping and returning false. Error handling shouldn't be the default mode of operation
+because it comes at a significant performance cost and it is not needed in all usecases.
+
 Using the random object generation, it should be possible to build a QucikCheck-like testing
 framework, which could be used to generate testcases for js-schema (yes, I like resursion).
-
-Defining and validating resursive data structures:
-
-```javascript
-// Defining the data structure:
-var Tree = schema({ left : [Tree, Number], right : [Tree, Number] });
-// The schema function gets this as argument:
-// { left : [undefined, Number], right : [undefined, Number] }
-// Since providing 'undefined' as part of an 'or' patterns doesn't make sense,
-// it must be a self-reference. Self-reference usually occur as part of 'or' patterns.
-
-// validation
-console.log( Tree({left : {left : 1, right : 2   }, right : 9}) ); // true
-console.log( Tree({left : {left : 1, right : null}, right : 9}) ); // false
-```
 
 Contributing
 ============
