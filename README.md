@@ -190,8 +190,8 @@ called. Consider the meaning of `[ Number, undefined ]` according to the rules d
 'anything else' in an 'or' relation. If js-schema sees `undefined` in an or relation, it assumes
 that this is in fact a self-reference.
 
-Use this feature careful, because it may easily lead to bugs. Only use it when the return value of
-the schema function is assigned to a newly defined variable.
+Use this feature carefully, because it may easily lead to bugs. Only use it when the return value
+of the schema function is assigned to a newly defined variable.
 
 Extensions
 ==========
