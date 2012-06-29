@@ -1,74 +1,320 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="js-schema : Object validation and random object generation." />
+<head>
+  <meta charset="utf-8">
+  
+  <title>js-schema</title>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+  <script src="js-schema.min.js"></script>
+  <script src="jquery.js"></script>
+  <script src="underscore.js"></script>
+  <script src="backbone.js"></script>
+  <script src="bootstrap-dropdown.js"></script>
 
-    <title>js-schema</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/molnarg/js-schema">View on GitHub</a>
-
-          <h1 id="project_title">js-schema</h1>
-          <h2 id="project_tagline">Object validation and random object generation.</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/molnarg/js-schema/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/molnarg/js-schema/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">js-schema maintained by <a href="https://github.com/molnarg">molnarg</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
+  <script>
+    Function.prototype.toJSON = function() {
+      return 'FUNCTION'
+    }
     
+    var examples = { duck : { schema : 'var Color = Array.of(3, Number.min(0).max(1));\n\n'
+                                     + 'var Duck = schema({\n'
+                                     + '  quack : Function,\n'
+                                     + '  age   : [0, 1, 2, 3, 4, 5, "very old"],\n'
+                                     + '  color : Color\n'
+                                     + '})\n\n'
+                                     + 'return Duck;\n'
+                            , data   : '{\n'
+                                     + '  "quack": function() {},\n'
+                                     + '  "age": 2,\n'
+                                     + '  "color": [ \n'
+                                     + '    0.523,\n'
+                                     + '    0.123,\n'
+                                     + '    0.626\n'
+                                     + '  ],\n'
+                                     + '}\n'
+                            }
+                   , tree : { schema : 'var Tree = schema({\n' 
+                                     + '  left  : [Number.Integer, Tree],\n'
+                                     + '  right : [Number.Integer, Tree],\n'
+                                     + '  "*"   : null\n'
+                                     + '})\n\n'
+                                     + 'return Tree;\n'
+                            , data   : '{\n'
+                                     + '  "left": 3,\n'
+                                     + '  "right": {\n'
+                                     + '    "left": 2,\n'
+                                     + '    "right": 5\n'
+                                     + '  }\n'
+                                     + '}\n'
+                            }
+                   , duck_array : { schema : 'var Color = Array.of(3, Number.min(0).max(1));\n\n'
+                                           + 'var Duck = schema({\n'
+                                           + '  quack : Function,\n'
+                                           + '  age   : [0, 1, 2, 3, 4, 5, "very old"],\n'
+                                           + '  color : Color\n'
+                                           + '})\n\n'
+                                           + 'return Array.of(Duck);\n'
+                                  , data   : '[\n'
+                                           + '  {\n'
+                                           + '    "quack": function() {},\n'
+                                           + '    "age": 2,\n'
+                                           + '    "color": [ \n'
+                                           + '      0.936,\n'
+                                           + '      0.121,\n'
+                                           + '      0.345\n'
+                                           + '    ],\n'
+                                           + '  },\n'
+                                           + '  {\n'
+                                           + '    "quack": function() {},\n'
+                                           + '    "age": 4,\n'
+                                           + '    "color": [ \n'
+                                           + '      0.523,\n'
+                                           + '      0.123,\n'
+                                           + '      0.626\n'
+                                           + '    ],\n'
+                                           + '  }\n'
+                                           + ']'
+                                  }
+    }
+                          
+    var CodeEditor = Backbone.Model.extend({
+      initialize : function() {
+        this.on('change:code', this.parse, this)
+      },
+      
+      parse : function() {
+        var code = (this.wrapper || '{code}').replace('{code}', this.get('code'))
+        
+        this.set({ error : '' })
+        
+        try {
+          var value = Function(code)()
+          
+          this.check(value)
+          
+          this.set({ value : value })
+        } catch(e) {
+          this.set({ error : e.toString() })
+        }
+      }
+    })
+    
+    var SchemaEditor = CodeEditor.extend({
+      check : function(schema) {
+        if (!schema) throw 'The function must return a schema.'
+        if (!schema.schema) throw 'The return value must be a schema.'
+      }
+    })
+    
+    var InstanceEditor = CodeEditor.extend({
+      wrapper : 'return {code};',
+      
+      check : function(instance) {
+        if (!(schema instanceof Object)) throw 'The instance must be an object.'
+      }
+    })
+    
+    var CodeEditorView = Backbone.View.extend({
+      initialize : function() {
+        this.model.on('change:error', _.debounce(this.showError, 800), this)
+        this.check()
+      },
+      
+      events : {
+        'keyup' : 'check'
+      },
+      
+      check : function() {
+        this.model.set({ code : this.$('textarea').val() })
+      },
+      
+      showError : function() {
+        var error = this.model.get('error')
+        
+        if (error) {
+          this.$('.alert').attr('class', 'alert alert-' + (error ? 'error' : 'success'))
+                          .text(error)
+          this.$el.addClass('error')
+        } else {
+          this.$el.removeClass('error')
+        }
+      }
+    })
+    
+    var DemoView = Backbone.View.extend({
+      initialize : function() {
+        this.schemaEditor   = this.options.schemaView.model
+        this.instanceEditor = this.options.instanceView.model
+        
+        this.schemaEditor  .on('change:value change:error', _.debounce(this.validate, 800), this)
+        this.instanceEditor.on('change:value change:error', _.debounce(this.validate, 800), this)
+      },
+      
+      events : {
+        'click .generate' : 'generate',
+        'click .validate' : 'validate',
+      },
+      
+      load : function(example) {
+        this.options.schemaView.$('textarea').val(example.schema)
+        this.options.schemaView.check()
+        this.options.instanceView.$('textarea').val(example.data)
+        this.options.instanceView.check()
+      },
+      
+      generate : function() {
+        var schema   = this.schemaEditor.get('value')
+          , object = schema.generate()
+          , json = JSON.stringify(object, undefined, 2).replace(/"FUNCTION"/g, 'function() {}')
+        
+        this.options.instanceView.$('textarea').val(json + '\n')
+        this.options.instanceView.check()
+      },
+      
+      validate : function() {
+        if (this.schemaEditor.get('error') || this.instanceEditor.get('error')) {
+          this.$('.validate').attr('class', 'validate btn btn-large btn-danger')
+          return
+        }
+        
+        var schema   = this.schemaEditor.get('value')
+          , instance = this.instanceEditor.get('value')
+          , valid = schema(instance)
+        
+        this.$('.validate').attr('class', 'validate btn btn-large ' + (valid ? 'btn-success' : 'btn-danger'))
+      }
+    })
+  </script>
 
-  </body>
+  <link href="bootstrap.css" rel="stylesheet">
+  
+  <link href='http://fonts.googleapis.com/css?family=Mystery+Quest' rel='stylesheet' type='text/css'>
+
+
+  <style>
+    body {
+    }
+    .container {
+      background-color: white;
+      margin: 0em auto;
+      padding: 2em 3em 5em;
+    }
+    
+    textarea {
+      height: 45em;
+      margin-top: 1em;
+      font-family: Courier;
+      resize:vertical;
+    }
+    #demo .error textarea {
+      color: #555;
+    }
+    
+    h1 {
+      font-weight: normal;
+      font-size: 4em;
+      margin: 2.5em 0em 2em;
+    }
+    
+    .hero-unit {
+      text-align: center;
+    }
+    .hero-unit h1 {
+      font-family: 'Mystery Quest', cursive;
+      margin: 0em 0em 0em;
+      font-size: 12.5em;
+    }
+    .hero-unit p {
+      margin-top: 4em;
+      margin-bottom: 2em;
+    }
+    .hero-unit a {
+      font-size: 1.5em;
+      margin-right: 0.5em;
+    }
+    
+    .alert {
+      visibility: hidden;
+    }
+    .error .alert {
+      visibility: visible;
+    }
+    
+    .not-important {
+      color: #888;
+    }
+    
+  </style>
+  
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="hero-unit">
+    <h1>js-schema</h1>
+    <p>
+      js-schema is an easy to use <strong>JavaScript library for schema handling</strong>.
+      It has a <strong>clean and simple syntax</strong>, and it is capable of <strong>generating
+      data</strong> that conforms to the given schema. <strong>JSON Schema</strong>
+      serialization is also supported.
+    </p>
+    <a class="btn btn-primary btn-large" href="https://github.com/molnarg/js-schema">View project on GitHub</a>
+    <a class="btn btn-large" href="https://raw.github.com/molnarg/js-schema/master/js-schema.min.js">
+      Download <span class="not-important">(v0.5, 15kb minified and gzipped)</span>
+    </a>
+    
+  </div>
+  
+  <h1 style="text-align: center"> Try it here: </h1>
+  
+  <div id="demo" class="row">
+    <div id="schema" class="editor control-group span6">
+      <div class="examples dropdown" style="float:right">
+        <a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#">
+          Load example
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a data-target="#" onclick="demo.load(examples.duck)">Duck</a></li>
+          <li><a data-target="#" onclick="demo.load(examples.duck_array)">Array of ducks</a></li>
+          <li><a data-target="#" onclick="demo.load(examples.tree)">Tree</a></li>
+        </ul>
+      </div>
+      <h2> Schema creation: </h2>
+      <textarea class="span6"></textarea>
+      <div class="alert"></div>
+    </div>
+    
+    <div id="instance" class="editor control-group span6">
+      <div style="float:right">
+        <button class="generate btn btn-large"> Generate valid data </button>
+        <button class="validate btn btn-large btn-success"> Validate </button>
+      </div>
+      <h2> Data: </h2>
+      <textarea class="span6"></textarea>
+      <div class="alert"></div>
+    </div>
+    
+  </div>
+  
+  <script>
+    var demo = new DemoView({ el : $('#demo')
+                            , schemaView   : new CodeEditorView({ el : $('#schema')
+                                                                , model : new SchemaEditor()
+                                                                })
+                            , instanceView : new CodeEditorView({ el : $('#instance')
+                                                                , model : new InstanceEditor()
+                                                                })
+                            })
+    
+    demo.load(examples.duck)
+  </script>
+
+</div>
+
+</body>
+
 </html>
