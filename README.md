@@ -25,8 +25,8 @@ var Duck = schema({              // A duck
 The resulting function (`Duck`) can be used for checking or validating objects:
 
 ```javascript
-var myDuck = { quack : function() {}, swim : function() {}, age : 2, color : 'yellow' },
-    myCat =  { purr  : function() {}, walk : function() {}, age : 3, color : 'black'  },
+var myDuck = { swim : function() {}, quack : function() {}, age : 2, color : 'yellow' },
+    myCat =  { walk : function() {}, purr  : function() {}, age : 3, color : 'black'  },
     animals = [ myDuck, myCat, {}, /*...*/ ];
 
 console.log( Duck(myDuck) ); // true
