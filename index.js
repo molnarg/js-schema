@@ -1,4 +1,4 @@
-module.exports = require('./lib/schema')
+module.exports = require('./lib/schema').schema
 
 // Core schemas
 require('./lib/patterns/reference')
