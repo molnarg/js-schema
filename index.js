@@ -9,6 +9,7 @@ require('./lib/patterns/or')
 require('./lib/patterns/equality')
 require('./lib/patterns/regexp')
 require('./lib/patterns/class')
+require('./lib/patterns/schema')
 
 // Extensions
 require('./lib/extensions/Boolean')
