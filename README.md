@@ -51,14 +51,14 @@ var tree = schema.generate( Tree );
 ```
 
 The schema description is _compiled_ into validation function for achieving maximal performance.
+The `Tree` schema is compiled to this code:
 
 ```javascript
-console.log( Tree.toString() );
-// function self(instance) {
-//   return instance != null &&
-//          ((Object(instance["left" ]) instanceof Number) || self(instance["left" ])) && 
-//          ((Object(instance["right"]) instanceof Number) || self(instance["right"]));
-// }
+function self(instance) {
+ return instance != null &&
+        ((Object(instance["left" ]) instanceof Number) || self(instance["left" ])) &&
+        ((Object(instance["right"]) instanceof Number) || self(instance["right"]));
+}
 ```
 
 Usage
