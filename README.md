@@ -11,9 +11,6 @@ Features
 Defining a schema:
 
 ```javascript
-var schema = require('js-schema');
-// or <script src="js-schema.min.js"></script> in the browser
-
 var Duck = schema({              // A duck
   swim : Function,               //  - can swim
   quack : Function,              //  - can quack
@@ -63,6 +60,9 @@ function self(instance) {
 
 Usage
 =====
+
+Include js-schema in your project with `var schema = require('js-schema');` in node.js or with
+`<script src="js-schema.min.js"></script>` in the browser.
 
 The first parameter passed to the `schema` function describes the schema, and the return value
 is a new function called validator. Then the validator can be used to check any object against
