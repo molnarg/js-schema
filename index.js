@@ -1,4 +1,4 @@
-module.exports = require('./lib/schema').schema
+module.exports = require('./lib/schema')
 
 // Core schemas
 require('./lib/patterns/reference')
@@ -18,3 +18,4 @@ require('./lib/extensions/String')
 require('./lib/extensions/Object')
 require('./lib/extensions/Array')
 require('./lib/extensions/Function')
+require('./lib/extensions/Schema')
