@@ -1,6 +1,6 @@
 module.exports = require('./lib/schema')
 
-// Core schemas
+// Patterns
 require('./lib/patterns/reference')
 require('./lib/patterns/nothing')
 require('./lib/patterns/anything')
