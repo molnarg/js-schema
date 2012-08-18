@@ -21,16 +21,19 @@ var Duck = schema({              // A duck
 });
 ```
 
-The resulting function (`Duck`) can be used for checking or validating objects:
+The resulting function (`Duck`) can be used to check objects against the declared schema:
 
 ```javascript
+// Some animals
 var myDuck = { swim : function() {}, quack : function() {}, age : 2, color : 'yellow' },
     myCat =  { walk : function() {}, purr  : function() {}, age : 3, color : 'black'  },
     animals = [ myDuck, myCat, {}, /*...*/ ];
 
+// Simple checks
 console.log( Duck(myDuck) ); // true
 console.log( Duck(myCat)  ); // false
 
+// Using the schema function with filter
 var ducks   = animals.filter( Duck );                        // every Duck-like animal
 var walking = animals.filter( schema({ walk : Function }) ); // every animal that can walk
 ```
@@ -39,6 +42,7 @@ It is also possible to define self-referencing data structures:
 
 ```javascript
 var Tree = schema({ left : [ Number, Tree ], right : [ Number, Tree ] });
+
 console.log( Tree({ left : 3, right : 3 })                        ); // true
 console.log( Tree({ left : 3, right : { left: 5, right: 5 } })    ); // true
 console.log( Tree({ left : 3, right : { left: 5, right: 's' } })  ); // false
