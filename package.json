@@ -16,7 +16,6 @@
     "url": "git@github.com:molnarg/js-schema.git"
   },
   "dependencies": {
-    "def.js" : "*",
     "randexp" : "*"
   },
   "devDependencies": {},
