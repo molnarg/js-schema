@@ -17,8 +17,7 @@
   },
   "dependencies": {
     "def.js" : "*",
-    "randexp" : "*",
-    "underscore" : "*"
+    "randexp" : "*"
   },
   "devDependencies": {},
   "engines": {
