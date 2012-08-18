@@ -5,8 +5,6 @@
   "keywords": [
     "schema",
     "JSON Schema",
-    "random generator",
-    "object generation",
     "testing"
   ],
   "version": "0.5.0",
@@ -16,7 +14,6 @@
     "url": "git@github.com:molnarg/js-schema.git"
   },
   "dependencies": {
-    "randexp" : "*"
   },
   "devDependencies": {},
   "engines": {
