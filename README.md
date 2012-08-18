@@ -2,8 +2,8 @@ js-schema
 =========
 
 js-schema is a new way of describing object schemas in JavaScript. It has a clean and simple syntax,
-and it is capable of serializing to/from the popular JSON Schema format. Typical usecases include
-object validation and random object generation.
+and it is capable of serializing to/from the popular JSON Schema format. The typical usecase is
+decalartive object validation.
 
 Features
 ========
@@ -33,29 +33,13 @@ var ducks   = animals.filter( Duck );                        // every Duck-like 
 var walking = animals.filter( schema({ walk : Function }) ); // every animal that can walk
 ```
 
-js-schema can generate random objects for a given schema for testing purposes:
-
-```javascript
-var duck      = schema.generate( Duck );
-var testcases = schema.generate( Array.of(5, Duck) );
-```
-
 It is also possible to define self-referencing data structures:
 
 ```javascript
 var Tree = schema({ left : [ Number, Tree ], right : [ Number, Tree ] });
-var tree = schema.generate( Tree );
-```
-
-The schema description is _compiled_ into validation function for achieving maximal performance.
-The `Tree` schema is compiled to this code:
-
-```javascript
-function self(instance) {
- return instance != null &&
-        ((Object(instance["left" ]) instanceof Number) || self(instance["left" ])) &&
-        ((Object(instance["right"]) instanceof Number) || self(instance["right"]));
-}
+console.log( Tree({ left : 3, right : 3 })                        ); // true
+console.log( Tree({ left : 3, right : { left: 5, right: 5 } })    ); // true
+console.log( Tree({ left : 3, right : { left: 5, right: 's' } })  ); // false
 ```
 
 Usage
@@ -244,9 +228,6 @@ external references like the 'instanceof' pattern).
 Error reporting. js-schema should be able to report validation errors in a meaningful way instead
 of just stopping and returning false. Error handling shouldn't be the default mode of operation
 because it comes at a significant performance cost and it is not needed in all usecases.
-
-Using the random object generation, it should be possible to build a QucikCheck-like testing
-framework, which could be used to generate testcases for js-schema (yes, I like resursion).
 
 Contributing
 ============
