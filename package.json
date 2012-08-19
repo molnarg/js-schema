@@ -15,7 +15,10 @@
   },
   "dependencies": {
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "browserify": "*",
+    "uglify-js": "*"
+  },
   "engines": {
     "node": "*"
   },
