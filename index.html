@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  
+
   <title>js-schema</title>
 
   <script src="js-schema.min.js"></script>
@@ -16,7 +16,7 @@
     Function.prototype.toJSON = function() {
       return 'FUNCTION'
     }
-    
+
     var examples = { duck : { schema : 'var Color = Array.of(3, Number.min(0).max(1));\n\n'
                                      + 'var Duck = schema({\n'
                                      + '  quack : Function,\n'
@@ -31,10 +31,10 @@
                                      + '    0.523,\n'
                                      + '    0.123,\n'
                                      + '    0.626\n'
-                                     + '  ],\n'
+                                     + '  ]\n'
                                      + '}\n'
                             }
-                   , tree : { schema : 'var Tree = schema({\n' 
+                   , tree : { schema : 'var Tree = schema({\n'
                                      + '  left  : [Number.Integer, Tree],\n'
                                      + '  right : [Number.Integer, Tree],\n'
                                      + '  "*"   : null\n'
@@ -63,7 +63,7 @@
                                            + '      0.936,\n'
                                            + '      0.121,\n'
                                            + '      0.345\n'
-                                           + '    ],\n'
+                                           + '    ]\n'
                                            + '  },\n'
                                            + '  {\n'
                                            + '    "quack": function() {},\n'
@@ -72,66 +72,66 @@
                                            + '      0.523,\n'
                                            + '      0.123,\n'
                                            + '      0.626\n'
-                                           + '    ],\n'
+                                           + '    ]\n'
                                            + '  }\n'
                                            + ']'
                                   }
     }
-                          
+
     var CodeEditor = Backbone.Model.extend({
       initialize : function() {
         this.on('change:code', this.parse, this)
       },
-      
+
       parse : function() {
         var code = (this.wrapper || '{code}').replace('{code}', this.get('code'))
-        
+
         this.set({ error : '' })
-        
+
         try {
           var value = Function(code)()
-          
+
           this.check(value)
-          
+
           this.set({ value : value })
         } catch(e) {
           this.set({ error : e.toString() })
         }
       }
     })
-    
+
     var SchemaEditor = CodeEditor.extend({
       check : function(schema) {
         if (!schema) throw 'The function must return a schema.'
         if (!schema.schema) throw 'The return value must be a schema.'
       }
     })
-    
+
     var InstanceEditor = CodeEditor.extend({
       wrapper : 'return {code};',
-      
+
       check : function(instance) {
         if (!(schema instanceof Object)) throw 'The instance must be an object.'
       }
     })
-    
+
     var CodeEditorView = Backbone.View.extend({
       initialize : function() {
         this.model.on('change:error', _.debounce(this.showError, 800), this)
         this.check()
       },
-      
+
       events : {
         'keyup' : 'check'
       },
-      
+
       check : function() {
         this.model.set({ code : this.$('textarea').val() })
       },
-      
+
       showError : function() {
         var error = this.model.get('error')
-        
+
         if (error) {
           this.$('.alert').attr('class', 'alert alert-' + (error ? 'error' : 'success'))
                           .text(error)
@@ -141,54 +141,54 @@
         }
       }
     })
-    
+
     var DemoView = Backbone.View.extend({
       initialize : function() {
         this.schemaEditor   = this.options.schemaView.model
         this.instanceEditor = this.options.instanceView.model
-        
+
         this.schemaEditor  .on('change:value change:error', _.debounce(this.validate, 800), this)
         this.instanceEditor.on('change:value change:error', _.debounce(this.validate, 800), this)
       },
-      
+
       events : {
         'click .generate' : 'generate',
         'click .validate' : 'validate',
       },
-      
+
       load : function(example) {
         this.options.schemaView.$('textarea').val(example.schema)
         this.options.schemaView.check()
         this.options.instanceView.$('textarea').val(example.data)
         this.options.instanceView.check()
       },
-      
+
       generate : function() {
         var schema   = this.schemaEditor.get('value')
           , object = schema.generate()
           , json = JSON.stringify(object, undefined, 2).replace(/"FUNCTION"/g, 'function() {}')
-        
+
         this.options.instanceView.$('textarea').val(json + '\n')
         this.options.instanceView.check()
       },
-      
+
       validate : function() {
         if (this.schemaEditor.get('error') || this.instanceEditor.get('error')) {
           this.$('.validate').attr('class', 'validate btn btn-large btn-danger')
           return
         }
-        
+
         var schema   = this.schemaEditor.get('value')
           , instance = this.instanceEditor.get('value')
           , valid = schema(instance)
-        
+
         this.$('.validate').attr('class', 'validate btn btn-large ' + (valid ? 'btn-success' : 'btn-danger'))
       }
     })
   </script>
 
   <link href="bootstrap.css" rel="stylesheet">
-  
+
   <link href='http://fonts.googleapis.com/css?family=Mystery+Quest' rel='stylesheet' type='text/css'>
 
 
@@ -200,9 +200,9 @@
       margin: 0em auto;
       padding: 2em 3em 5em;
     }
-    
+
     textarea {
-      height: 45em;
+      height: 38em;
       margin-top: 1em;
       font-family: Courier;
       resize:vertical;
@@ -211,20 +211,20 @@
     #demo .error textarea {
       color: #555;
     }
-    
+
     h1 {
       font-weight: normal;
       font-size: 4em;
       margin: 2.5em 0em 2em;
     }
-    
+
     .hero-unit {
       text-align: center;
     }
     .hero-unit h1 {
       font-family: 'Mystery Quest', cursive;
       margin: 0em 0em 0em;
-      font-size: 12.5em;
+      font-size: 12em;
     }
     .hero-unit p {
       margin-top: 4em;
@@ -234,34 +234,34 @@
       font-size: 1.5em;
       margin-right: 0.5em;
     }
-    
+
     .alert {
       visibility: hidden;
     }
     .error .alert {
       visibility: visible;
     }
-    
+
     .not-important {
       color: #888;
     }
-    
+
   </style>
-  
+
   <script type="text/javascript">
-  
+
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-1277369-11']);
     _gaq.push(['_trackPageview']);
-  
+
     (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
-  
+
   </script>
-  
+
 </head>
 
 <body>
@@ -272,19 +272,18 @@
     <h1>js-schema</h1>
     <p>
       js-schema is an easy to use <strong>JavaScript library for schema handling</strong>.
-      It has a <strong>clean and simple syntax</strong>, and it is capable of <strong>generating
-      data</strong> that conforms to the given schema. <strong>JSON Schema</strong>
-      serialization is also supported.
+      It has a <strong>clean and simple syntax</strong> and supports the standard
+      <strong>JSON Schema</strong> format as well.
     </p>
     <a class="btn btn-primary btn-large" href="https://github.com/molnarg/js-schema">View project on GitHub</a>
     <a class="btn btn-large" href="https://raw.github.com/molnarg/js-schema/master/js-schema.min.js">
-      Download <span class="not-important">(v0.5, 15kb minified and gzipped)</span>
+      Download <span class="not-important">(v0.6.1, 5kb minified and gzipped)</span>
     </a>
-    
+
   </div>
-  
+
   <h1 style="text-align: center"> Try it here: </h1>
-  
+
   <div id="demo" class="row">
     <div id="schema" class="editor control-group span6">
       <div class="examples dropdown" style="float:right">
@@ -298,11 +297,11 @@
           <li><a data-target="#" onclick="demo.load(examples.tree)">Tree</a></li>
         </ul>
       </div>
-      <h2> Schema creation: </h2>
+      <h2> Schema: </h2>
       <textarea class="span6"></textarea>
       <div class="alert"></div>
     </div>
-    
+
     <div id="instance" class="editor control-group span6">
       <div style="float:right">
         <button class="generate btn btn-large"> Generate valid data </button>
@@ -312,9 +311,9 @@
       <textarea class="span6"></textarea>
       <div class="alert"></div>
     </div>
-    
+
   </div>
-  
+
   <script>
     var demo = new DemoView({ el : $('#demo')
                             , schemaView   : new CodeEditorView({ el : $('#schema')
@@ -324,7 +323,7 @@
                                                                 , model : new InstanceEditor()
                                                                 })
                             })
-    
+
     demo.load(examples.duck)
   </script>
 
