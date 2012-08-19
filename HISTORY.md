@@ -7,7 +7,7 @@ Version history
 ### 0.6.0 (2012-08-18) ###
  * Support for general purpose referencing (with JSON Schema serialization/deserialization)
  * Property description support
- * Splitting out random generation into a separate library (molnarg/random.js)
+ * Splitting out random generation into a separate library (molnarg/generate.js)
  * Removal of the premature compilation system (optimizations will reappear in a future release)
  * Cleaner codebase
  * Js-schema is now self-contained: it has no dependencies
