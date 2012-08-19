@@ -240,12 +240,19 @@ Contributing
 
 Feel free to open an issue if you would like to help imporving js-schema or find a bug.
 
-Installation
-============
+Installation on node.js
+=======================
 
 Using [npm](http://npmjs.org):
 
     npm install js-schema
+
+Build
+=====
+
+To build the browser verison you will need node.js and two node.js packages: browserify
+and uglifyjs installed globally (`npm install -g browserify uglify-js`). `build.sh`
+assembles a debug version using browserify and then minifies it using uglify.
 
 License
 =======
