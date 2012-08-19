@@ -113,7 +113,7 @@ var validate = schema({                    // (6) 'object' pattern
                                            //         (7) 'primitive' pattern
                                            //         (4) 'deep equality' pattern
   b : Number,                              //     (1) 'class schema' pattern
-  c : /The meaning of life is \d+/,        //     (3) regexp pattern
+  c : /The meaning of life is \d+/,        //     (3) 'regexp' pattern
   d : undefined,                           //     (9) 'anything' pattern
   e : [null, schema.self]                  //     (5) 'or' pattern
                                            //         (8) 'nothing' pattern
