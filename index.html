@@ -6,7 +6,7 @@
 
   <title>js-schema</title>
 
-  <script src="js-schema.min.js"></script>
+  <script src="generate.min.js"></script>
   <script src="jquery.js"></script>
   <script src="underscore.js"></script>
   <script src="backbone.js"></script>
@@ -165,7 +165,7 @@
 
       generate : function() {
         var schema   = this.schemaEditor.get('value')
-          , object = schema.generate()
+          , object = generate(schema)
           , json = JSON.stringify(object, undefined, 2).replace(/"FUNCTION"/g, 'function() {}')
 
         this.options.instanceView.$('textarea').val(json + '\n')
