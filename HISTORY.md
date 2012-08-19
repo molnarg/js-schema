@@ -1,6 +1,9 @@
 Version history
 ===============
 
+### 0.6.1 (2012-08-19) ###
+ * Minor bugfixes
+
 ### 0.6.0 (2012-08-18) ###
  * Support for general purpose referencing (with JSON Schema serialization/deserialization)
  * Property description support
