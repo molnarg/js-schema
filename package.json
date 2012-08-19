@@ -1,11 +1,12 @@
 {
   "author": "Gábor Molnár <gabor.molnar@sch.bme.hu>",
   "name": "js-schema",
-  "description": "A simple and easy to use schema library.",
+  "description": "A simple and intuitive object validation library",
   "keywords": [
     "schema",
     "JSON Schema",
-    "testing"
+    "validation",
+    "validator"
   ],
   "version": "0.6.0",
   "homepage": "https://github.com/molnarg/js-schema",
