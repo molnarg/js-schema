@@ -1,6 +1,9 @@
 Version history
 ===============
 
+### 0.6.2 (2013-02-03) ###
+ * Fixing Windows and Mac compatibility issues (#3, #5)
+
 ### 0.6.1 (2012-08-19) ###
  * Minor bugfixes
 
