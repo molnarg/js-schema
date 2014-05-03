@@ -1,6 +1,9 @@
 Version history
 ===============
 
+### 0.6.3 (2014-05-03) ###
+ * Bower front-end package manager support
+
 ### 0.6.2 (2013-02-03) ###
  * Fixing Windows and Mac compatibility issues (#3, #5)
 

@@ -5,7 +5,7 @@ js-schema is a new way of describing object schemas in JavaScript. It has a clea
 and it is capable of serializing to/from the popular JSON Schema format. The typical usecase is
 decalartive object validation.
 
-**Latest release**: 0.6.2 (2013/02/03)
+**Latest release**: 0.6.3 (2014/05/03)
 
 Features
 ========
@@ -241,12 +241,16 @@ Contributing
 
 Feel free to open an issue if you would like to help imporving js-schema or find a bug.
 
-Installation on node.js
-=======================
+Installation
+============
 
 Using [npm](http://npmjs.org):
 
     npm install js-schema
+
+Using [bower](http://bower.io):
+
+    bower install js-schema
 
 Build
 =====
