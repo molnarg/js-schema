@@ -12,7 +12,7 @@
     "validation",
     "validator"
   ],
-  "version": "0.6.3",
+  "version": "0.6.4",
   "homepage": "https://github.com/molnarg/js-schema",
   "repository": {
     "type": "git",
