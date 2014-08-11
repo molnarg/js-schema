@@ -1,6 +1,9 @@
 Version history
 ===============
 
+### 0.6.4 (2014-08-11) ###
+ * Fixing Bower issues
+
 ### 0.6.3 (2014-05-03) ###
  * Bower front-end package manager support
 

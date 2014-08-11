@@ -5,7 +5,7 @@ js-schema is a new way of describing object schemas in JavaScript. It has a clea
 and it is capable of serializing to/from the popular JSON Schema format. The typical usecase is
 decalartive object validation.
 
-**Latest release**: 0.6.3 (2014/05/03)
+**Latest release**: 0.6.4 (2014/08/11)
 
 Features
 ========
