@@ -18,11 +18,10 @@
     "type": "git",
     "url": "git@github.com:molnarg/js-schema.git"
   },
-  "dependencies": {
-  },
   "devDependencies": {
     "browserify": "*",
-    "uglify-js": "*"
+    "uglify-js": "*",
+    "vows": "^0.7.0"
   },
   "engines": {
     "node": "*"
