@@ -26,18 +26,23 @@ vows.describe('Validation Object with errors').addBatch({
         'Invalid nested input':function(){
             var input = {
                 a : {
-                    aa:false
+                    aa:false,
+                    cc:false
                 },
                 d:true
             };
-
-            var aSchema = schema({
-                aa:Number,
-                bb:Boolean,
-                cc:Function
-            })
             var instance = schema({
-                a : aSchema,
+                a : {
+                    aa:Number,
+                    bb:{
+                        aaa:Boolean,
+                        bbb:Number,
+                        ccc:{
+                            aaaa:Boolean
+                        }
+                    },
+                    cc:Function
+                },
                 b : Number,
                 c : Boolean,
                 d : Number
