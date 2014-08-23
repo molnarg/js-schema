@@ -5,17 +5,17 @@ var vows = require('vows'),
 // Create a Test Suite
 vows.describe('Validation Array with errors').addBatch({
     'Array.of': {
-        'Number -> input : [null, undefined, Object, Function]':function(){
+        'Number -> invalid input : [null, undefined, Object, Function]':function(){
             var input = [
                 null, undefined, Object, Function
             ];
             var aSchema = schema(Array.of(Number));
             input.forEach(function(input){
                 var result = aSchema.errors(input);
-                assert(/(.*) is not an instance of Array/.test(result.message), "Errors should return  'X is not an instance of Array'");
+                assert(/(.*) is not an instance of Array/.test(result.message), "Errors should return  '"+input+" is not an instance of Array'");
             })
         },
-        'Number -> input : only numbers': function () {
+        'Number -> valid input : only numbers': function () {
                 var input = [9,0,1,2,3,4,5,6];
                 var aSchema = schema(Array.of(Number));
                 var result = aSchema.errors(input);
