@@ -7,14 +7,14 @@ vows.describe('Validation Boolean with errors').addBatch({
     'Boolean': {
         topic:function(){
             return {
-                invalid_inputs:[0,-1,1,"false","true","whatever",NaN, [],{},/dwa/],
+                invalid_inputs:[0,-1,1,"false","true","whatever",NaN, [],{},/dwa/]
             }
         },
         'invalid input -> [0,-1,1,"false","true","whatever",NaN, [],{},/dwa/]':function(topic){
             topic.invalid_inputs.forEach(function(input){
                 var result = schema(Boolean).errors(input);
                 assert(
-                    /(.*) is not Boolean/.test(result.message),
+                    /(.*) is not Boolean/.test(result),
                     "Errors should throw : " + input + " is not Boolean"
                 )
             })

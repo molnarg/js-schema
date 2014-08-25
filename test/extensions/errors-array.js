@@ -1,5 +1,6 @@
 var vows = require('vows'),
     assert = require('assert'),
+    printTestResult = require('../printTestResult.js'),
     schema = require('../../index.js');
 
 // Create a Test Suite
@@ -12,7 +13,7 @@ vows.describe('Validation Array with errors').addBatch({
             var aSchema = schema(Array.of(Number));
             input.forEach(function(input){
                 var result = aSchema.errors(input);
-                assert(/(.*) is not an instance of Array/.test(result.message), "Errors should return  '"+input+" is not an instance of Array'");
+                assert(/(.*) is not an instance of Array/.test(result), "Errors should return  '"+input+" is not an instance of Array'");
             })
         },
         'Number -> valid input : only numbers': function () {
