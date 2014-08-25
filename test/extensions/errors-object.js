@@ -8,15 +8,16 @@ var vows = require('vows'),
 vows.describe('Validation Object with errors').addBatch({
     'Object': {
         'Invalid input : empty object':function(){
+            var input = {};
             var instance = schema({
-                func: Function,
-                number : Number.min(6).max(9),
+                func    : Function,
+                number  : Number.min(6).max(9),
                 boolean : Boolean,
-                string : String
+                string  : String
             });
-            var result = instance.errors({});
-            assert(!result,printTestResult({}, result) )
+            var result = instance.errors(input);
 
+            assert(!result , printTestResult(input, result));
         },
         'Invalid nested input':function(){
             var input = {
