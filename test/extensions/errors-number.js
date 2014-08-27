@@ -1,7 +1,7 @@
-var vows = require('vows'),
-    assert = require('assert'),
-    printTestResult = require('../printTestResult.js'),
-    schema = require('../../index.js');
+var vows            = require('vows')
+  , assert          = require('assert')
+  , printTestResult = require('../printTestResult.js')
+  , schema          = require('../../index.js');
 
 
 // Create a Test Suite
@@ -17,10 +17,7 @@ vows.describe('Validation Number with errors').addBatch({
     },
     'min() - invalid input': function(topic) {
       var result = schema(Number.min(5)).errors(0);
-      assert(
-        /number = (.*) is smaller than required minimum = (.*)/.test(result),
-        'Error should return : number = X is smaller than required minimum = Y'
-      );
+      assert(/number = (.*) is smaller than required minimum = (.*)/.test(result), 'Error should return : number = X is smaller than required minimum = Y');
     },
     'min() - valid input': function(topic) {
       var result = schema(Number.min(5)).errors(5);
@@ -28,10 +25,7 @@ vows.describe('Validation Number with errors').addBatch({
     },
     'max() - invalid input': function(topic) {
       var result = schema(Number.max(5)).errors(9);
-      assert(
-        /number = (.*) is bigger than required maximum = (.*)/.test(result),
-        'Error should return : number = X is bigger than required maximum = Y'
-      );
+      assert(/number = (.*) is bigger than required maximum = (.*)/.test(result), 'Error should return : number = X is bigger than required maximum = Y');
     },
     'max() - valid input': function(topic) {
       var result = schema(Number.max(5)).errors(5);
