@@ -16,27 +16,27 @@ vows.describe('Validation Reference with errors').addBatch({
   '': {
     topic: function() {
       var A = function A() {
-        this.name = "dwa"
+        this.name = 'dwa'
       };
 
       var instanceA = new A();
       return {
-        kinds: ["string", "number", "date", "function A()", "new A()", "function ()", "Object"],
+        kinds: ['string', 'number', 'date', 'function A()', 'new A()', 'function ()', 'Object'],
         inputs: {
-          "null": null,
-          "undefined": undefined,
-          "string": "other",
-          "number": 10,
-          "date": new Date(),
-          "A": A,
-          "new A()": instanceA
+          'null': null,
+          'undefined': undefined,
+          'string': 'other',
+          'number': 10,
+          'date': new Date(),
+          'A': A,
+          'new A()': instanceA
         },
         schemas: {
-          "string": schema(new ReferenceSchema("test")),
-          "number": schema(new ReferenceSchema(10)),
-          "date": schema(new ReferenceSchema(new Date())),
-          "A": schema(new ReferenceSchema(A)),
-          "new A()": schema(new ReferenceSchema(instanceA))
+          'string': schema(new ReferenceSchema('test')),
+          'number': schema(new ReferenceSchema(10)),
+          'date': schema(new ReferenceSchema(new Date())),
+          'A': schema(new ReferenceSchema(A)),
+          'new A()': schema(new ReferenceSchema(instanceA))
         }
       }
     },
@@ -49,7 +49,7 @@ vows.describe('Validation Reference with errors').addBatch({
             var result = sch.errors(inp);
             assert(result)
             if (result) {
-              console.log("      all by all", vows.inspect(result));
+              console.log('      all by all', vows.inspect(result));
             }
           }
         }
