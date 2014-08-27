@@ -8,16 +8,21 @@ var vows = require('vows'),
 vows.describe('Validation Object with errors').addBatch({
     'Object': {
         'Invalid input : empty object':function(){
-            var input = {};
+            var input = {object:{}, number:3};
+            var B = function B(){};
             var instance = schema({
                 func    : Function,
                 number  : Number.min(6).max(9),
                 boolean : Boolean,
-                string  : String
+                string  : String,
+                class  : B,
+                object: {
+                    a:Number.min(2).max(7),
+                    b:Function
+                }
             });
             var result = instance.errors(input);
-
-            assert(!result , printTestResult(input, result));
+            assert(result == false, printTestResult(input, result));
         },
         'Invalid nested input':function(){
             var input = {
@@ -29,7 +34,7 @@ vows.describe('Validation Object with errors').addBatch({
             };
             var instance = schema({
                 a : {
-                    aa:Number,
+                    aa:[Number.min(2), String],
                     bb:{
                         aaa:Boolean,
                         bbb:Number,
@@ -44,7 +49,7 @@ vows.describe('Validation Object with errors').addBatch({
                 d : Number
             });
             var result = instance.errors(input);
-            assert(!result,printTestResult(input, result))
+            assert(result == false,printTestResult(input, result))
         }
     }
 }).export(module)
