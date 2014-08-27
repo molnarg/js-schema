@@ -10,7 +10,7 @@ vows.describe('Validation Boolean with errors').addBatch({
         invalid_inputs: [0, -1, 1, 'false', 'true', 'whatever', NaN, [], {}, /dwa/]
       }
     },
-    'invalid input -> [0,-1,1,'false','true','whatever',NaN, [],{},/dwa/]': function(topic) {
+    'invalid input -> [0,-1,1,"false","true","whatever",NaN, [],{},/dwa/]': function(topic) {
       topic.invalid_inputs.forEach(function(input) {
         var result = schema(Boolean).errors(input);
         assert(
