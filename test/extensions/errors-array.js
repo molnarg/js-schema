@@ -22,8 +22,5 @@ vows.describe('Validation Array with errors').addBatch({
       var result = aSchema.errors(input);
       assert(result === false, 'errors method should return false');
     }
-  },
-  'Array.of(length, pattern)': {},
-  'Array.of(minLength, maxLength, pattern)': {},
-  'Array.like(array)': {}
+  }
 }).export(module)

@@ -25,7 +25,9 @@ vows.describe('Validation Object with errors').addBatch({
         }
       });
       var result = instance.errors(input);
-      assert(result == false, printTestResult(input, result));
+      console.log('Input : \n', vows.inspect(input));
+      console.log('Errors : \n', vows.inspect(result));
+      assert(result, printTestResult(input, result))
     },
     'Invalid nested input': function() {
       var input = {
@@ -52,7 +54,9 @@ vows.describe('Validation Object with errors').addBatch({
         d: Number
       });
       var result = instance.errors(input);
-      assert(result == false, printTestResult(input, result))
+      console.log('Input : \n', vows.inspect(input));
+      console.log('Errors : \n', vows.inspect(result));
+      assert(result, printTestResult(input, result))
     }
   }
 }).export(module)
