@@ -1,7 +1,7 @@
 var vows            = require('vows')
   , assert          = require('assert')
   , printTestResult = require('../printTestResult.js')
-  , schema          = require('../../index.js');
+  , schema          = require('../../index.js')
 
 // Create a Test Suite
 vows.describe('Validation Boolean with errors').addBatch({
