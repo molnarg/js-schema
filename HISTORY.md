@@ -1,6 +1,11 @@
 Version history
 ===============
 
+### 0.7.0 (2014-09-01) ###
+ * Support for error reporting
+ * Addition of .jshintrc file for code style consistency
+ * Addition of unit tests
+
 ### 0.6.4 (2014-08-11) ###
  * Fixing Bower issues
 
