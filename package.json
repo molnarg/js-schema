@@ -1,7 +1,8 @@
 {
-  "author": "Gábor Molnár <gabor.molnar@sch.bme.hu>",
+  "author": "Gábor Molnár <gabor@molnar.es>",
   "contributors": [
-    "Alan James"
+    "Alan James",
+    "Kuba Wyrobek"
   ],
   "name": "js-schema",
   "description": "A simple and intuitive object validation library",
@@ -12,7 +13,7 @@
     "validation",
     "validator"
   ],
-  "version": "0.6.4",
+  "version": "0.7.0",
   "homepage": "https://github.com/molnarg/js-schema",
   "repository": {
     "type": "git",
