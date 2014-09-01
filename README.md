@@ -2,10 +2,10 @@ js-schema
 =========
 
 js-schema is a new way of describing object schemas in JavaScript. It has a clean and simple syntax,
-and it is capable of serializing to/from the popular JSON Schema format. The typical usecase is
-decalartive object validation.
+and it is capable of serializing to/from the popular JSON Schema format. The typical use case is
+declarative object validation.
 
-**Latest release**: 0.6.4 (2014/08/11)
+**Latest release**: 0.7.0 (2014/09/01)
 
 Features
 ========
@@ -46,6 +46,23 @@ var Tree = schema({ left : [ Number, Tree ], right : [ Number, Tree ] });
 console.log( Tree({ left : 3, right : 3 })                        ); // true
 console.log( Tree({ left : 3, right : { left: 5, right: 5 } })    ); // true
 console.log( Tree({ left : 3, right : { left: 5, right: 's' } })  ); // false
+```
+
+Error reporting:
+
+```javascript
+Duck.errors({
+  swim: function() {},
+  quack: function() {},
+  age: 6,
+  color: 'green'
+});
+
+// {
+//   age: 'number = 6 is bigger than required maximum = 5',
+//   color: 'string = green is not reference to string = yellow AND
+//           string = green is not reference to string = brown'
+// }
 ```
 
 Usage
@@ -191,7 +208,7 @@ Extensions
 
 There are five functions that can be used for describing number ranges: `min`, `max`, `below`,
 `above` and `step`. All of these are chainable, so for example `Number.min(a).below(b)` matches `x`
-if `a <= x && x < b`. The `Number.step(a)` matches `x` if `x` is a divisble by `a`.
+if `a <= x && x < b`. The `Number.step(a)` matches `x` if `x` is a divisible by `a`.
 
 ### Strings ###
 
@@ -232,14 +249,15 @@ Better JSON Schema support. js-schema should be able to parse any valid JSON sch
 JSON Schema for most of the patterns (this is not possible in general, because of patterns that hold
 external references like the 'instanceof' pattern).
 
-Error reporting. js-schema should be able to report validation errors in a meaningful way instead
-of just stopping and returning false. Error handling shouldn't be the default mode of operation
-because it comes at a significant performance cost and it is not needed in all usecases.
-
 Contributing
 ============
 
-Feel free to open an issue if you would like to help imporving js-schema or find a bug.
+Feel free to open an issue or send a pull request if you would like to help improving js-schema or find a bug.
+
+People who made significant contributions so far:
+
+ * (Alan James)[https://github.com/alanjames1987]
+ * (Kuba Wyrobek)[https://github.com/parhelium]
 
 Installation
 ============
@@ -255,8 +273,8 @@ Using [bower](http://bower.io):
 Build
 =====
 
-To build the browser verison you will need node.js and two node.js packages: browserify
-and uglifyjs installed globally (`npm install -g browserify uglify-js`). `build.sh`
+To build the browser version you will need node.js and the development dependencies that can be
+installed with npm (type `npm install ./` in the project directory). `build.sh`
 assembles a debug version using browserify and then minifies it using uglify.
 
 License
@@ -264,4 +282,4 @@ License
 
 The MIT License
 
-Copyright (C) 2012 Gábor Molnár <gabor.molnar@sch.bme.hu>
+Copyright (C) 2012 Gábor Molnár <gabor@molnar.es>
