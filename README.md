@@ -256,8 +256,8 @@ Feel free to open an issue or send a pull request if you would like to help impr
 
 People who made significant contributions so far:
 
- * (Alan James)[https://github.com/alanjames1987]
- * (Kuba Wyrobek)[https://github.com/parhelium]
+ * [Alan James](https://github.com/alanjames1987)
+ * [Kuba Wyrobek](https://github.com/parhelium)
 
 Installation
 ============

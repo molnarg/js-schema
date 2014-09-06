@@ -2,7 +2,7 @@ var vows = require('vows')
   , assert = require('assert')
   , printTestResult = require('../printTestResult.js')
   , schema = require('../../index.js')
-  , ReferenceSchema = require('../../lib/patterns/reference');
+  , ReferenceSchema = require('../../lib/patterns/reference')
 
 
 var generateTest = function(ref) {
