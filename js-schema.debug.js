@@ -678,7 +678,7 @@ var ObjectSchema = module.exports = Schema.patterns.ObjectSchema = Schema.extend
   initialize: function(properties, other) {
     var self = this
 
-    this.other = other || nothing;
+    this.other = other || anything
     this.properties = properties || []
 
     // Sorting properties into two groups
@@ -721,12 +721,12 @@ var ObjectSchema = module.exports = Schema.patterns.ObjectSchema = Schema.extend
       validatedFields[k] = false;
     }
 
-    var regexpErrors =  self.validatePropsFunction(instance, self.regexpProps, validatedFields, function (key, instanceKey, check, value) {
+    var regexpErrors =  self.validatePropsFunction(instance, self.regexpProps, validatedFields, function (checkKey, instanceKey, check, value) {
       return check.key.test(instanceKey) && check.value.validate(value);
     });
 
-    var stringErrors = self.validatePropsFunction(instance, self.stringProps, validatedFields, function (key, instanceKey, check, value) {
-      return key === instanceKey && check.value.validate(value);
+    var stringErrors = self.validatePropsFunction(instance, self.stringProps, validatedFields, function (checkKey, instanceKey, check, value) {
+      return checkKey === instanceKey && check.value.validate(value);
     });
 
     var missedPropsErrors = {};
