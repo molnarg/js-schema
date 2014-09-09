@@ -110,12 +110,12 @@ vows.describe('Validation Object with errors').addBatch({
       var allowAll = schema({
         "*": String
       });
-      expect(allowAll({})).toBe(true);
+      assert(true, allowAll({}));
 
       var allowSome = schema({
         "check": [null, String]
       });
-      expect(allowSome({})).toBe(true);
+      assert(true, allowSome({}));
     }
   }
 }).export(module)
