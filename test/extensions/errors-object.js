@@ -69,11 +69,10 @@ vows.describe('Validation Object with errors').addBatch({
       var emptyArray = [];
       assert(false, validation(emptyArray));
     },
-    //this test is commented, because there is not "strict" mode yet
-    /*
     "some fields are valid, all the rest are not": function () {
       var validation = schema({
-        "+check.?" : Number
+        "+check.?" : Number,
+        "*" : null
       });
       var correctObject = {
         check1 : 1,
@@ -87,7 +86,6 @@ vows.describe('Validation Object with errors').addBatch({
       };
       assert(false, validation(incorrectObject));
     },
-    */
     "with allowed other fields": function () {
       var anotherValidation = schema({
         "+check.?": Number,
