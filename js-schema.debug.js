@@ -910,7 +910,7 @@ var OrSchema = module.exports = Schema.patterns.OrSchema = Schema.extend({
         }
       })
       if (errors.length > 0) {
-        return errors.join('   OR   ')
+        return errors.join(' AND ')
       }
     }
     return false
@@ -1117,4 +1117,10 @@ schema.fromJSON = function(sch) {
   return Schema.fromJSON(sch).wrap()
 }
 
+// define js-schema using AMD
+if (typeof define === 'function' && define.amd) {
+  define([], function(){
+    return schema;
+  });
+}
 },{"./BaseSchema":2}]},{},[1]);
