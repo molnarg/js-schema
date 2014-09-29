@@ -923,7 +923,7 @@ var OrSchema = module.exports = Schema.patterns.OrSchema = Schema.extend({
         }
       })
       if (errors.length > 0) {
-        return errors.join(' AND ')
+        return errors;
       }
     }
     return false
