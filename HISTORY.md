@@ -1,6 +1,9 @@
 Version history
 ===============
 
+### 0.7.1 (2014-09-29) ###
+ * Array.of : arguments' type check which prevents from misusage like : Array.of(schema, length) or Array.of(schema, minLength, maxLength).   
+
 ### 0.7.0 (2014-09-01) ###
  * Support for error reporting
  * Addition of .jshintrc file for code style consistency
