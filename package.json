@@ -3,7 +3,8 @@
   "contributors": [
     "Alan James",
     "Kuba Wyrobek",
-    "Mikael Berg"
+    "Mikael Berg",
+    "Alex Ivanov"
   ],
   "name": "js-schema",
   "description": "A simple and intuitive object validation library",

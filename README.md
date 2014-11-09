@@ -259,6 +259,7 @@ People who made significant contributions so far:
  * [Alan James](https://github.com/alanjames1987)
  * [Kuba Wyrobek](https://github.com/parhelium)
  * [Mikael Berg](https://github.com/mikberg)
+ * [Alex Ivanov](https://github.com/alex-ivanov)
 
 Installation
 ============
