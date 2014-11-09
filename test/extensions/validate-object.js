@@ -13,10 +13,10 @@ vows.describe('Validation Object').addBatch({
         "+.+" : String
       });
       var emptyObject = {};
-      assert(false, validation(emptyObject));
+      assert(false === validation(emptyObject));
 
       var emptyArray = [];
-      assert(false, validation(emptyArray));
+      assert(false === validation(emptyArray));
     },
     "some fields are valid, all the rest are not": function () {
       var validation = schema({
@@ -33,7 +33,7 @@ vows.describe('Validation Object').addBatch({
         check2 : 2,
         someOther : 3
       };
-      assert(false, validation(incorrectObject));
+      assert(false === validation(incorrectObject));
     },
     "with allowed other fields": function () {
       var anotherValidation = schema({
@@ -50,8 +50,8 @@ vows.describe('Validation Object').addBatch({
         someOther: 3
       };
 
-      assert(true, anotherValidation(o1));
-      assert(true, anotherValidation(o2));
+      assert(true === anotherValidation(o1));
+      assert(true === anotherValidation(o2));
     },
     "empty object should be valid sometimes": function () {
       var allowAll = schema({
@@ -62,7 +62,7 @@ vows.describe('Validation Object').addBatch({
       var allowSome = schema({
         "check": [null, String]
       });
-      assert(true, allowSome({}));
+      assert(true === allowSome({}));
     }
   }
 }).export(module)
