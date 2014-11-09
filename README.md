@@ -220,8 +220,8 @@ The `String.of` method has three signatures:
 `charset` must be given in a format that can be directly inserted in a regular expression when
 wrapped by `[]`. For example, `'abc'` means a character set containing the first 3 lowercase letters
 of the english alphabet, while `'a-zA-C'` means a character set of all english lowercase letters,
-and the first 3 uppercase letters. If `charset` is `undefined` then the `a-zA-Z0-9` character set
-is used.
+and the first 3 uppercase letters. If `charset` is `undefined` or `null` then there's no restriction on
+the character set.
 
 ### Arrays ###
 
