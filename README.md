@@ -69,7 +69,7 @@ Usage
 =====
 
 Include js-schema in your project with `var schema = require('js-schema');` in node.js or with
-`<script src="js-schema.min.js"></script>` in the browser.
+`<script src="js-schema.min.js"></script>` in the browser. AMD module loading is also supported.
 
 The first parameter passed to the `schema` function describes the schema, and the return value
 is a new function called validator. Then the validator can be used to check any object against
