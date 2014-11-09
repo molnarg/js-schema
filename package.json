@@ -2,7 +2,8 @@
   "author": "Gábor Molnár <gabor@molnar.es>",
   "contributors": [
     "Alan James",
-    "Kuba Wyrobek"
+    "Kuba Wyrobek",
+    "Mikael Berg"
   ],
   "name": "js-schema",
   "description": "A simple and intuitive object validation library",
