@@ -24,6 +24,7 @@
   "devDependencies": {
     "browserify": "*",
     "uglify-js": "*",
+    "underscore": "^1.7.0",
     "vows": "^0.7.0"
   },
   "engines": {

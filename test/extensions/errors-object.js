@@ -1,4 +1,5 @@
 var vows = require('vows')
+    , _ = require('underscore')
     , assert = require('assert')
     , schema = require('../../index.js')
 
@@ -17,16 +18,15 @@ vows.describe('Testing if errors() precisely informs about the cause').addBatch(
         },
         'Number': {
             topic:function(common){
-                return {
+                return _.defaults({
                     schema: schema({test: Number.min(0).max(10)}),
                     input_invalid_string: {test: "hello world"},
                     input_invalid_number: {test: 190},
                     input_valid: {test: 5}
-                }
+                }, common);
             },
 
             'Object { test : Number }  : String was passed instead Number': function (t) {
-                console.log(t.input_invalid_string)
                 var validation = false === t.schema(t.input_invalid_string);
                 assert(validation, 'Validation is broken. Incorrect object '+vows.inspect(t.input_invalid_string)+' should NOT be validated.');
 
@@ -47,14 +47,16 @@ vows.describe('Testing if errors() precisely informs about the cause').addBatch(
         },
         'String': {
             topic: function(common){
-                common['schema']      = schema({test: String}),
-                common['input_valid'] = {test: "some string"};
-                return common;
+                return _.defaults({
+                    schema: schema({test: String}),
+                    input_valid: {test: "some string"}
+                }, common);
             },
             'Object { test : String }  : Boolean | Function | Object | Number was passed instead String': function (t) {
-                [t.input_invalid_boolean, t.input_invalid_function, t.input_invalid_number, t.input_invalid_object].forEach(function (instance) {
+                [t.input_invalid_boolean, t.input_invalid_function, t.input_invalid_number, t.input_invalid_object].forEach(function (instance, index, array) {
                     var validation = false === t.schema(instance);
-                    assert(validation, 'Validation is broken. Incorrect object should NOT be validated.');
+                    assert(!_.isString(instance.test), "Input nr "+index+" is broken ("+vows.inspect(instance)+").  Test assumes that 'instance.test' is not String")
+                    assert(validation, 'Validation is broken. Received input '+vows.inspect(t.input_invalid_string)+' should NOT be validated.');
 
                     var errors = t.schema.errors(instance);
                     validation = /(.*) is not a String/.test(errors.test);
