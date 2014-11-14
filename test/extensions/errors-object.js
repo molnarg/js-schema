@@ -1,35 +1,68 @@
-var vows            = require('vows')
-  , assert          = require('assert')
-  , schema          = require('../../index.js')
+var vows = require('vows')
+    , assert = require('assert')
+    , schema = require('../../index.js')
 
 
 // Create a Test Suite
-vows.describe('Testing if errors() precisely informs about cause').addBatch({
-
-    'Number':{
-        topic:{
-            schema                  : schema({test:Number.min(0).max(10)}),
-            input_invalid_string    : {test: "hello world"},
-            input_invalid_number    : {test: 190},
-            input_valid             : {test: 5}
+vows.describe('Testing if errors() precisely informs about the cause').addBatch({
+    'Object': {
+        topic:function(){
+            return {
+                input_invalid_boolean: {test: false},
+                input_invalid_function: {test: function () {}},
+                input_invalid_object: {test: {}},
+                input_invalid_number: {test: 190},
+                input_invalid_string: {test: "hello world"}
+            }
         },
-        'Object { test : Number }  : String was passed instead Number':function(t){
-            var validation = false === t.schema(t.input_invalid_string); 
-            assert(validation, 'Validation is broken. Incorrect object should NOT be validated.');
+        'Number': {
+            topic:function(common){
+                return {
+                    schema: schema({test: Number.min(0).max(10)}),
+                    input_invalid_string: {test: "hello world"},
+                    input_invalid_number: {test: 190},
+                    input_valid: {test: 5}
+                }
+            },
 
-            var errors = t.schema.errors(t.input_invalid_string);
-            validation = errors.test == 'dwadawd';
-            
-            assert(validation, 'Function schema.errors returns incorrect message : \n \t\t'+ vows.inspect(errors));
+            'Object { test : Number }  : String was passed instead Number': function (t) {
+                console.log(t.input_invalid_string)
+                var validation = false === t.schema(t.input_invalid_string);
+                assert(validation, 'Validation is broken. Incorrect object '+vows.inspect(t.input_invalid_string)+' should NOT be validated.');
+
+                var errors = t.schema.errors(t.input_invalid_string);
+                validation = /hello world is not Number/.test(errors.test);
+
+                assert(validation, 'Function schema.errors returns incorrect message : \n \t\t' + vows.inspect(errors));
+            },
+            'Object { test : Number }  : Too big Number was passed ': function (t) {
+                var validation = false === t.schema(t.input_invalid_number);
+                assert(validation, 'Validation is broken. Incorrect object should NOT be validated.');
+
+                var errors = t.schema.errors(t.input_invalid_number);
+                validation = /number = 190 is bigger than required maximum = 10/.test(errors.test);
+
+                assert(validation, 'Function schema.errors returns incorrect message : \n \t\t' + vows.inspect(errors));
+            }
         },
-        'Object { test : Number }  : Too big Number was passed ':function(t){
-            var validation = false === t.schema(t.input_invalid_number);
-            assert(validation, 'Validation is broken. Incorrect object should NOT be validated.');
+        'String': {
+            topic: function(common){
+                common['schema']      = schema({test: String}),
+                common['input_valid'] = {test: "some string"};
+                return common;
+            },
+            'Object { test : String }  : Boolean | Function | Object | Number was passed instead String': function (t) {
+                [t.input_invalid_boolean, t.input_invalid_function, t.input_invalid_number, t.input_invalid_object].forEach(function (instance) {
+                    var validation = false === t.schema(instance);
+                    assert(validation, 'Validation is broken. Incorrect object should NOT be validated.');
 
-            var errors = t.schema.errors(t.input_invalid_number);
-            validation = errors.test == 'dwadawd';
+                    var errors = t.schema.errors(instance);
+                    validation = /(.*) is not a String/.test(errors.test);
 
-            assert(validation, 'Function schema.errors returns incorrect message : \n \t\t'+ vows.inspect(errors));
+                    assert(validation, 'Function schema.errors returns incorrect message : \n \t\t' + vows.inspect(errors));
+                })
+
+            }
         }
     }
 
