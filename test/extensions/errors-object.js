@@ -6,7 +6,7 @@ var vows = require('vows')
 
 // Create a Test Suite
 vows.describe('Testing if errors() precisely informs about the cause').addBatch({
-    'Object': {
+    'Object : ': {
         topic:function(){
             return {
                 input_invalid_boolean: {test: false},
@@ -15,6 +15,39 @@ vows.describe('Testing if errors() precisely informs about the cause').addBatch(
                 input_invalid_number: {test: 190},
                 input_invalid_string: {test: "hello world"}
             }
+        },
+        'Examples from docs':{
+            'Testing Duck':function(t) {
+
+                var Duck = schema({              // A duck
+                    swim: Function,               //  - can swim
+                    quack: Function,              //  - can quack
+                    age: Number.min(0).max(5),    //  - is 0 to 5 years old
+                    color: ['yellow', 'brown']    //  - has either yellow or brown color
+                });
+                var instance = {
+                    swim: function () {                },
+                    quack: function () {                 },
+                    age: 6,
+                    color: 'green'
+                }
+
+                assert(instance.age === 6, "Input is broken. Test assumes that instance.age = 6. Instance.age equal to " + instance.age)
+                assert(instance.color === 'green', "Input is broken. Test assumes that instance.color = 'green'. Instance.test equal to " + instance.color)
+
+                var validation = false === Duck(instance);
+                assert(validation, 'Validation is broken. Incorrect object '+vows.inspect(instance)+' should NOT be validated.');
+
+                var errors = Duck.errors(instance);
+                validation = /number = 6 is bigger than required maximum = 5/.test(errors.age);
+                errors.color.forEach(function(msg, index,arr){
+                    assert(/string = green is not reference to (.*)/.test(errors.color[index]), "Incorrect message was returned = " + errors.color[index] );
+                })
+
+                validation = /number = 6 is bigger than required maximum = 5/.test(errors.color);
+
+            }
+
         },
         'Number': {
             topic:function(common){
