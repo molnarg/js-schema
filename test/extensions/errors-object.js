@@ -27,19 +27,25 @@ vows.describe('Testing if errors() precisely informs about the cause').addBatch(
             },
 
             'Object { test : Number }  : String was passed instead Number': function (t) {
-                var validation = false === t.schema(t.input_invalid_string);
-                assert(validation, 'Validation is broken. Incorrect object '+vows.inspect(t.input_invalid_string)+' should NOT be validated.');
+                var instance = t.input_invalid_string;
+                assert(_.isString(instance.test), "Input is broken ("+vows.inspect(instance)+").  Test assumes that 'instance.test' is String")
 
-                var errors = t.schema.errors(t.input_invalid_string);
+                var validation = false === t.schema(instance);
+                assert(validation, 'Validation is broken. Incorrect object '+vows.inspect(instance)+' should NOT be validated.');
+
+                var errors = t.schema.errors(instance);
                 validation = /hello world is not Number/.test(errors.test);
 
                 assert(validation, 'Function schema.errors returns incorrect message : \n \t\t' + vows.inspect(errors));
             },
             'Object { test : Number }  : Too big Number was passed ': function (t) {
-                var validation = false === t.schema(t.input_invalid_number);
+                var instance = t.input_invalid_number;
+                assert(_.isNumber(instance.test), "Input is broken ("+vows.inspect(instance)+").  Test assumes that 'instance.test' is Number")
+
+                var validation = false === t.schema(instance);
                 assert(validation, 'Validation is broken. Incorrect object should NOT be validated.');
 
-                var errors = t.schema.errors(t.input_invalid_number);
+                var errors = t.schema.errors(instance);
                 validation = /number = 190 is bigger than required maximum = 10/.test(errors.test);
 
                 assert(validation, 'Function schema.errors returns incorrect message : \n \t\t' + vows.inspect(errors));
