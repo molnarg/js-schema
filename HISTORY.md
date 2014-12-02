@@ -1,6 +1,9 @@
 Version history
 ===============
 
+### 0.7.2 (2014-12-02) ###
+ * Reverting the object pattern fix released in 0.7.1 because of breaking error reporting functionality
+
 ### 0.7.1 (2014-11-09) ###
  * A bugfix for OrSchema `errors()` method (thanks to Kuba Wyrobek)
  * Type checking for `Array.of()` that prevents misusages like:
