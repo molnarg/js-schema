@@ -591,6 +591,13 @@ var ClassSchema = module.exports = Schema.patterns.ClassSchema = Schema.extend({
   },
   validate: function(instance) {
     return instance instanceof this.constructor
+  },
+  toJSON: function() {
+    var json = Schema.prototype.toJSON.call(this)
+
+    json.type = this.constructor.name
+
+    return json
   }
 })
 
