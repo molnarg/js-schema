@@ -15,7 +15,10 @@
     "validation",
     "validator"
   ],
-  "version": "0.7.2",
+  "scripts": {
+    "test": "./test.sh"
+  },
+  "version": "0.8.0",
   "homepage": "https://github.com/molnarg/js-schema",
   "repository": {
     "type": "git",
