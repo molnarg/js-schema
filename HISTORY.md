@@ -1,6 +1,11 @@
 Version history
 ===============
 
+### 1.0.0 (2014-05-03) ###
+ * Proper implementation of regexp and quantified properties
+ * The library has been stable for a long time now, so it's time to release 1.0. It will also make it possible
+   to signal API breakage in the future (using semantic versioning).
+
 ### 0.7.2 (2014-12-02) ###
  * Reverting the object pattern fix released in 0.7.1 because of breaking error reporting functionality
 
