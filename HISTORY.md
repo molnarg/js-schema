@@ -1,6 +1,9 @@
 Version history
 ===============
 
+### 1.0.1 (2014-05-06) ###
+ * Add missing concatenated and minified versions
+
 ### 1.0.0 (2014-05-03) ###
  * Proper implementation of regexp and quantified properties
  * The library has been stable for a long time now, so it's time to release 1.0. It will also make it possible
