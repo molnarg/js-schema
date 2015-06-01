@@ -30,5 +30,8 @@
   "engines": {
     "node": "*"
   },
+  "scripts": {
+    "test":"./test.sh"
+  },
   "main": "./index.js"
 }
