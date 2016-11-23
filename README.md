@@ -240,7 +240,14 @@ The `Array.of` method has three signatures:
 
 ### Functions ###
 
-`Function.reference(func)` matches `x` if `x === func`.
+The `Function.reference(func)` matches `x` if `x === func`.
+
+The `Function.custom(func)` takes a user-defined function and passes `x` to it. The user-defined function must return `{valid: myBooleanValue, msg: 'My fail message'}` where the `valid` field tells js-schema to pass or fail the test, and `msg` is the error message shown if `valid` is `false`. For example: 
+```javascript
+var validate = schema({
+  'name': Function.custom(x => ( { valid: x !== 'Bob' && x.length < 4, msg: 'Name is Bob or is too long' } ))
+});
+```
 
 Future plans
 ============
