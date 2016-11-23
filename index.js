@@ -1,6 +1,7 @@
 module.exports = require('./lib/schema')
 
 // Patterns
+require('./lib/patterns/custom')
 require('./lib/patterns/reference')
 require('./lib/patterns/nothing')
 require('./lib/patterns/anything')
